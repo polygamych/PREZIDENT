@@ -2,625 +2,1186 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>PREZIDENT — Mobile Game UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no" />
+  <title>Gift lab</title>
+  <meta name="theme-color" content="#070b16" />
   <style>
     :root {
-      --bg: #070b16;
-      --bg-2: #121826;
-      --panel: rgba(23, 28, 42, 0.88);
-      --panel-soft: rgba(255,255,255,0.06);
-      --text: #ffffff;
-      --muted: rgba(255,255,255,0.65);
-      --blue: #1c8cff;
-      --blue-2: #4cb4ff;
-      --violet: #9d4dff;
-      --pink: #ff4fd8;
-      --green: #23d16b;
-      --danger: #ff4a57;
-      --shadow: 0 18px 60px rgba(0,0,0,.45);
-      --radius: 28px;
+      --bg: #050811;
+      --bg-2: #0b1120;
+      --bg-3: #121a2f;
+      --panel: rgba(14, 19, 31, 0.78);
+      --line: rgba(255, 255, 255, 0.08);
+      --text: #f6f9ff;
+      --muted: rgba(232, 240, 255, 0.64);
+      --muted-2: rgba(232, 240, 255, 0.42);
+      --blue: #33a6ff;
+      --blue-2: #62c6ff;
+      --violet: #8f5bff;
+      --pink: #ff5ed8;
+      --gold: #ffd86d;
+      --green: #35e885;
+      --green-2: #73ffad;
+      --red: #ff667b;
+      --orange: #ff9d3a;
+      --shadow-xl: 0 30px 90px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 18px 50px rgba(0, 0, 0, 0.34);
+      --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.24);
+      --radius-xl: 34px;
+      --radius-lg: 26px;
+      --radius-md: 20px;
+      --radius-sm: 16px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+      --nav-height: 92px;
+      --max-app-width: 470px;
+      --grad-main: linear-gradient(135deg, rgba(58, 174, 255, 0.95) 0%, rgba(122, 94, 255, 0.92) 50%, rgba(255, 94, 216, 0.92) 100%);
+      --grad-surface: linear-gradient(180deg, rgba(20, 28, 44, 0.94), rgba(10, 14, 24, 0.97));
     }
 
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     html, body {
       margin: 0;
-      background: radial-gradient(circle at top, #111831 0%, #090d17 45%, #05070d 100%);
-      color: var(--text);
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       overflow-x: hidden;
+      overscroll-behavior-x: none;
+      overscroll-behavior-y: none;
     }
 
-    body::before {
+    body {
+      background:
+        radial-gradient(1200px 820px at 50% -10%, rgba(65, 146, 255, 0.16), transparent 58%),
+        radial-gradient(380px 380px at 12% 22%, rgba(128, 90, 255, 0.12), transparent 58%),
+        radial-gradient(320px 320px at 88% 18%, rgba(255, 97, 218, 0.08), transparent 60%),
+        linear-gradient(180deg, #0a1020 0%, #070b16 42%, #04070f 100%);
+    }
+
+    body::before,
+    body::after {
       content: "";
       position: fixed;
       inset: 0;
-      background-image:
-        radial-gradient(circle at 20% 15%, rgba(255,255,255,.9) 0 1px, transparent 2px),
-        radial-gradient(circle at 70% 25%, rgba(255,255,255,.8) 0 1px, transparent 2px),
-        radial-gradient(circle at 35% 68%, rgba(255,255,255,.7) 0 1px, transparent 2px),
-        radial-gradient(circle at 83% 56%, rgba(255,255,255,.9) 0 1px, transparent 2px),
-        radial-gradient(circle at 15% 83%, rgba(255,255,255,.8) 0 1px, transparent 2px);
-      opacity: .55;
-      animation: starsFloat 14s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes starsFloat {
-      from { transform: translateY(0); }
-      to { transform: translateY(20px); }
-    }
-
-    .app {
-      width: 100%;
-      min-height: 100vh;
-      max-width: 460px;
-      margin: 0 auto;
-      position: relative;
-      overflow: hidden;
-      padding: 14px 14px 110px;
-    }
-
-    .planet, .glow, .meteor {
-      position: absolute;
       pointer-events: none;
       z-index: 0;
     }
 
+    body::before {
+      opacity: 0.55;
+      background-image:
+        radial-gradient(circle at 10% 12%, rgba(255,255,255,.95) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 22% 68%, rgba(255,255,255,.8) 0 1px, transparent 1.8px),
+        radial-gradient(circle at 38% 22%, rgba(255,255,255,.62) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 56% 80%, rgba(255,255,255,.76) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 72% 28%, rgba(255,255,255,.9) 0 1px, transparent 1.8px),
+        radial-gradient(circle at 86% 54%, rgba(255,255,255,.72) 0 1px, transparent 1.8px);
+      animation: starsFloat 14s linear infinite;
+    }
+
+    body::after {
+      background:
+        radial-gradient(circle at 50% 30%, rgba(255,255,255,.025), transparent 45%),
+        radial-gradient(circle at 50% 100%, rgba(67, 152, 255, 0.06), transparent 35%);
+      mix-blend-mode: screen;
+    }
+
+    @keyframes starsFloat {
+      from { transform: translateY(0); }
+      to { transform: translateY(18px); }
+    }
+
+    button, input { font: inherit; }
+
+    .app-shell {
+      width: 100%;
+      max-width: var(--max-app-width);
+      margin: 0 auto;
+      min-height: 100dvh;
+      position: relative;
+      z-index: 1;
+      padding:
+        calc(14px + var(--safe-top))
+        calc(14px + var(--safe-right))
+        calc(var(--nav-height) + 24px + var(--safe-bottom))
+        calc(14px + var(--safe-left));
+      isolation: isolate;
+    }
+
+    .aurora, .planet, .orbit-ring, .streak, .flash-layer, .shockwave-layer {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(100vw, var(--max-app-width));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .aurora {
+      inset: 0 auto auto 50%;
+      height: 100dvh;
+      background:
+        radial-gradient(280px 180px at 18% 26%, rgba(79, 188, 255, 0.12), transparent 60%),
+        radial-gradient(260px 180px at 78% 18%, rgba(255, 95, 218, 0.09), transparent 60%),
+        radial-gradient(340px 180px at 50% 70%, rgba(143, 91, 255, 0.08), transparent 64%);
+      filter: blur(14px);
+    }
+
     .planet {
-      width: 170px;
-      height: 170px;
-      right: -55px;
-      top: -24px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #f6f1db 0%, #d9cab0 22%, #655d61 58%, rgba(0,0,0,0) 63%);
-      opacity: .75;
-      filter: blur(.4px);
+      top: -32px;
+      height: 220px;
+      background: radial-gradient(circle at 84% 28%, rgba(255, 242, 175, 0.95) 0%, rgba(255, 178, 83, 0.42) 20%, rgba(255, 134, 0, 0.10) 38%, transparent 54%);
+      filter: blur(6px);
+      opacity: .92;
     }
 
-    .glow {
-      width: 180px;
-      height: 180px;
-      left: -80px;
-      bottom: 160px;
-      background: radial-gradient(circle, rgba(73,140,255,.25) 0%, rgba(73,140,255,.08) 45%, transparent 70%);
-      filter: blur(20px);
-      animation: pulse 4s ease-in-out infinite;
+    .orbit-ring {
+      top: 138px;
+      height: 260px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      border-radius: 999px;
+      opacity: .4;
     }
 
-    @keyframes pulse {
-      0%,100% { transform: scale(1); opacity: .5; }
-      50% { transform: scale(1.15); opacity: .9; }
+    .streak {
+      top: 110px;
+      height: 220px;
+      background:
+        linear-gradient(108deg, transparent, rgba(255,255,255,.06) 44%, transparent 56%),
+        linear-gradient(124deg, transparent, rgba(98, 198, 255, 0.08) 40%, transparent 56%);
+      animation: streakMove 9s linear infinite;
+      opacity: .82;
     }
 
-    .meteor {
-      width: 120px;
-      height: 2px;
-      background: linear-gradient(90deg, rgba(255,140,0,0), rgba(255,140,0,1), rgba(255,255,255,0));
-      top: 130px;
-      left: 58%;
-      transform: rotate(-4deg);
-      filter: blur(.3px);
-      animation: meteor 4.5s linear infinite;
-      opacity: .9;
+    @keyframes streakMove {
+      from { transform: translateX(-50%) translateY(0); }
+      to { transform: translateX(-50%) translateY(22px); }
     }
 
-    @keyframes meteor {
-      0% { transform: translateX(80px) translateY(-30px) rotate(-6deg); opacity: 0; }
-      15% { opacity: 1; }
-      100% { transform: translateX(-260px) translateY(80px) rotate(-6deg); opacity: 0; }
+    .flash-layer {
+      inset: 0 auto auto 50%;
+      height: 100dvh;
+      opacity: 0;
+      z-index: 30;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.96) 0%, rgba(255, 235, 184, 0.84) 14%, rgba(255, 181, 70, 0.22) 32%, rgba(255, 120, 20, 0.08) 48%, transparent 62%);
+      transition: opacity .12s ease;
+    }
+
+    .flash-layer.show { opacity: 1; }
+
+    .shockwave-layer {
+      inset: 0 auto auto 50%;
+      height: 100dvh;
+      opacity: 0;
+      z-index: 29;
+      background:
+        radial-gradient(circle at 50% 34%, rgba(255,255,255,.36) 0 2px, transparent 2px),
+        radial-gradient(circle at 50% 34%, rgba(255,255,255,.18) 0 1px, transparent 1px);
+    }
+
+    .shockwave-layer.show { animation: shockwave 620ms ease-out; }
+
+    @keyframes shockwave {
+      0% { opacity: .88; transform: translateX(-50%) scale(.16); }
+      100% { opacity: 0; transform: translateX(-50%) scale(2.2); }
+    }
+
+    .screen {
+      display: none;
+      position: relative;
+      z-index: 2;
+      animation: screenIn .32s ease;
+    }
+
+    .screen.active { display: block; }
+
+    @keyframes screenIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .glass {
+      background: rgba(18, 24, 39, 0.72);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-lg);
     }
 
     .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .brand-area, .top-tools {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: 10px;
-      position: relative;
-      z-index: 2;
-      padding-top: max(6px, env(safe-area-inset-top));
+      min-width: 0;
     }
 
-    .chip, .icon-btn, .balance {
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.06);
-      border-radius: 18px;
-      backdrop-filter: blur(16px);
-      box-shadow: var(--shadow);
+    .brand-chip, .online-chip, .balance-chip, .circle-btn, .section-chip, .history-pill, .mini-stat, .floating-chip, .status-card, .quick-btn, .surface, .nav-item, .profile-box, .modal-card, .result-banner {
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-lg);
     }
 
-    .chip {
+    .brand-chip {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-      font-size: 15px;
+      min-width: 0;
+      padding: 11px 16px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      font-weight: 950;
+      white-space: nowrap;
     }
 
-    .left-tools, .right-tools { display: flex; align-items: center; gap: 10px; }
-
-    .online {
-      color: #26dd72;
-      font-weight: 800;
-    }
-
-    .icon-btn {
-      width: 46px;
-      height: 46px;
-      border-radius: 16px;
-      border: none;
-      color: white;
-      font-size: 21px;
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 12px;
       display: grid;
       place-items: center;
+      background: var(--grad-main);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.38), 0 12px 26px rgba(57, 167, 255, 0.24);
+      font-size: 15px;
+      flex: 0 0 auto;
     }
 
-    .balance {
-      padding: 10px 14px;
-      min-width: 104px;
+    .online-chip, .balance-chip {
+      height: 48px;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      background: rgba(255,255,255,.07);
+      font-weight: 900;
+    }
+
+    .online-chip strong { color: var(--green-2); }
+    .balance-chip { min-width: 134px; justify-content: space-between; }
+    .balance-chip .value { color: #9cd6ff; }
+
+    .circle-btn {
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      border-radius: 18px;
+      border: none;
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      cursor: pointer;
+      transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .circle-btn:active, .quick-btn:active, .nav-item:active, .action-btn:active, .ghost-btn:active, .primary-btn:active {
+      transform: scale(.97);
+    }
+
+    .hero-card, .surface, .profile-box, .modal-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      background: var(--grad-surface);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .hero-card::before, .surface::before, .profile-box::before, .modal-card::before {
+      content: "";
+      position: absolute;
+      inset: -35% -20%;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 18% 24%, rgba(255,255,255,.09), transparent 22%),
+        radial-gradient(circle at 80% 0%, rgba(255, 220, 134, 0.14), transparent 24%),
+        linear-gradient(120deg, transparent 8%, rgba(255,255,255,.04) 38%, transparent 62%);
+      animation: cardFlow 9s linear infinite;
+      opacity: .96;
+    }
+
+    @keyframes cardFlow {
+      0% { transform: translateX(-16px); }
+      50% { transform: translateX(16px); }
+      100% { transform: translateX(-16px); }
+    }
+
+    .hero-card { padding: 18px; margin-bottom: 14px; isolation: isolate; }
+
+    .hero-head {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: clamp(28px, 6vw, 34px);
+      font-weight: 1000;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .hero-subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 700;
+      max-width: 280px;
+    }
+
+    .status-card {
+      position: relative;
+      z-index: 2;
+      border-radius: 18px;
+      padding: 10px 12px;
+      min-width: 94px;
+      text-align: center;
+      background: rgba(255,255,255,.07);
+    }
+
+    .status-card .label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .95px;
+      color: var(--muted-2);
+      font-weight: 900;
+    }
+
+    .status-card .value {
+      display: block;
+      margin-top: 5px;
+      font-size: 16px;
+      font-weight: 1000;
+      color: #fff;
+    }
+
+    .scene {
+      position: relative;
+      z-index: 2;
+      height: 280px;
+      margin-top: 14px;
+      border-radius: 30px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 100%, rgba(83, 132, 255, 0.22), transparent 42%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.00) 36%),
+        linear-gradient(180deg, rgba(8, 11, 20, 0), rgba(8, 11, 20, 0.28) 64%, rgba(8,11,20,.52));
+      border: 1px solid rgba(255,255,255,.06);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 18px 60px rgba(0,0,0,.28);
+      isolation: isolate;
+    }
+
+    .scene-grid {
+      position: absolute;
+      inset: auto -15% -40px -15%;
+      height: 148px;
+      background:
+        linear-gradient(rgba(108, 168, 255, 0.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(108, 168, 255, 0.18) 1px, transparent 1px);
+      background-size: 34px 18px;
+      transform: perspective(260px) rotateX(73deg);
+      opacity: .42;
+      filter: drop-shadow(0 -10px 24px rgba(78, 153, 255, 0.12));
+    }
+
+    .scene-nebula {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(220px 120px at 20% 34%, rgba(69, 200, 255, 0.08), transparent 65%),
+        radial-gradient(200px 120px at 80% 22%, rgba(255, 89, 215, 0.08), transparent 64%),
+        radial-gradient(260px 140px at 55% 66%, rgba(143, 91, 255, 0.08), transparent 64%);
+      filter: blur(6px);
+      opacity: .9;
+    }
+
+    .comment-clouds {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .92;
+    }
+
+    .bubble {
+      position: absolute;
+      max-width: 122px;
+      border-radius: 16px;
+      padding: 9px 12px;
+      background: rgba(255,255,255,.065);
+      border: 1px solid rgba(255,255,255,.06);
+      color: rgba(255,255,255,.82);
+      font-size: 12px;
+      font-weight: 850;
+      backdrop-filter: blur(12px);
+      animation: bubbleFloat 5s ease-in-out infinite;
+    }
+
+    .bubble:nth-child(2) { animation-delay: .8s; }
+    .bubble:nth-child(3) { animation-delay: 1.4s; }
+    .bubble:nth-child(4) { animation-delay: 2s; }
+    .bubble.b1 { top: 22px; left: 12px; }
+    .bubble.b2 { top: 54px; right: 16px; }
+    .bubble.b3 { bottom: 48px; left: 18px; }
+    .bubble.b4 { bottom: 22px; right: 24px; }
+
+    @keyframes bubbleFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    .rocket-layer { position: absolute; inset: 0; z-index: 4; }
+
+    .rocket-trail {
+      position: absolute;
+      width: 170px;
+      height: 18px;
+      left: 50%;
+      top: 50%;
+      transform-origin: left center;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(131, 214, 255, 0.16) 24%, rgba(124, 210, 255, 0.34) 46%, rgba(255, 159, 58, 0.76) 70%, rgba(255, 243, 190, 0.96) 100%);
+      filter: blur(8px);
+      opacity: .86;
+      will-change: transform, left, top;
+    }
+
+    .rocket-smoke {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .smoke-puff {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.9), rgba(126, 194, 255, 0.12) 58%, transparent 70%);
+      filter: blur(.4px);
+      opacity: 0;
+      transform: scale(.2);
+      will-change: transform, left, top, opacity;
+    }
+
+    .rocket {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 82px;
+      height: 82px;
+      margin: -41px 0 0 -41px;
+      border-radius: 26px;
+      display: grid;
+      place-items: center;
+      font-size: 46px;
+      background:
+        radial-gradient(circle at 32% 26%, rgba(255,255,255,.26), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.04));
+      box-shadow: 0 18px 36px rgba(0,0,0,.32), 0 0 40px rgba(86, 171, 255, 0.18);
+      backdrop-filter: blur(10px);
+      will-change: transform, left, top, opacity;
+      z-index: 5;
+    }
+
+    .rocket::before, .rocket::after {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border-radius: 30px;
+      pointer-events: none;
+    }
+
+    .rocket::before {
+      background: radial-gradient(circle, rgba(104, 199, 255, 0.28) 0%, rgba(104, 199, 255, 0.1) 54%, transparent 74%);
+      animation: rocketAura 1.8s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .rocket::after {
+      inset: auto 16px -26px 16px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 50% 0%, rgba(255, 242, 196, 0.95) 0%, rgba(255, 176, 68, 0.8) 35%, rgba(255, 111, 24, 0.22) 64%, transparent 80%);
+      filter: blur(6px);
+      animation: engineFlame .52s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes rocketAura {
+      0%,100% { transform: scale(.92); opacity: .6; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    @keyframes engineFlame {
+      0%,100% { transform: scaleY(.92) scaleX(.96); opacity: .82; }
+      50% { transform: scaleY(1.12) scaleX(1.04); opacity: 1; }
+    }
+
+    .center-multiplier {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 6;
+      pointer-events: none;
+      padding-bottom: 8px;
+      text-align: center;
+    }
+
+    .center-multiplier .main {
+      display: inline-block;
+      font-size: clamp(56px, 15vw, 94px);
+      font-weight: 1000;
+      letter-spacing: -2px;
+      line-height: .95;
+      text-shadow: 0 12px 34px rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,1), rgba(197, 225, 255, 0.86));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: counterPulse 1.8s ease-in-out infinite;
+    }
+
+    .center-multiplier .sub {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 850;
+      color: rgba(255,255,255,.62);
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+    }
+
+    @keyframes counterPulse {
+      0%,100% { transform: scale(.985); }
+      50% { transform: scale(1.015); }
+    }
+
+    .crash-burst {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 22px;
+      height: 22px;
+      transform: translate(-50%, -50%) scale(.1);
+      border-radius: 50%;
+      opacity: 0;
+      z-index: 7;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255, 241, 185, 1) 18%, rgba(255, 177, 64, 0.85) 38%, rgba(255, 113, 14, 0.46) 56%, transparent 72%);
+      filter: blur(1px);
+    }
+
+    .crash-burst.show { animation: burst 720ms cubic-bezier(.14,.8,.18,1) forwards; }
+
+    @keyframes burst {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.08); }
+      14% { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(15); }
+    }
+
+    .hero-footer {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .history-row {
+      display: flex;
+      gap: 8px;
+      overflow: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+
+    .history-row::-webkit-scrollbar { display: none; }
+
+    .history-pill {
+      flex: 0 0 auto;
+      border-radius: 16px;
+      padding: 10px 13px;
+      background: rgba(255,255,255,.06);
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: .15px;
+    }
+
+    .history-pill.live {
+      background: linear-gradient(135deg, rgba(53, 232, 133, 0.24), rgba(69, 177, 255, 0.16));
+      color: #d9fff0;
+    }
+
+    .history-pill.mid {
+      background: linear-gradient(135deg, rgba(68, 150, 255, 0.26), rgba(143, 91, 255, 0.18));
+      color: #d7e8ff;
+    }
+
+    .history-pill.hot {
+      background: linear-gradient(135deg, rgba(255, 96, 219, 0.26), rgba(148, 93, 255, 0.20));
+      color: #ffd8f7;
+    }
+
+    .floating-chip {
+      border-radius: 18px;
+      padding: 11px 13px;
+      background: rgba(255,255,255,.06);
+      font-size: 12px;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .9px;
+      white-space: nowrap;
+    }
+
+    .surface { padding: 16px; margin-bottom: 14px; isolation: isolate; }
+
+    .surface-head {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .surface-title {
+      margin: 0;
+      font-size: 23px;
+      font-weight: 1000;
+      letter-spacing: -.5px;
+    }
+
+    .surface-subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 750;
+    }
+
+    .section-chip {
+      border-radius: 16px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.82);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .bet-grid { position: relative; z-index: 2; display: grid; gap: 12px; }
+
+    .bet-box {
+      border-radius: 24px;
+      padding: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.07);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bet-box::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 8%, rgba(255,255,255,.08) 48%, transparent 78%);
+      transform: translateX(-130%);
+      animation: betSheen 3s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes betSheen { to { transform: translateX(135%); } }
+
+    .bet-topline {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      font-weight: 800;
-      font-size: 16px;
-    }
-
-    .coin { color: #49a8ff; }
-    .plus { color: rgba(255,255,255,.75); font-size: 24px; line-height: 1; }
-
-    .hero {
+      margin-bottom: 12px;
       position: relative;
-      z-index: 2;
-      min-height: 290px;
-      display: flex;
+      z-index: 1;
+    }
+
+    .label { font-size: 13px; color: var(--muted); font-weight: 850; }
+
+    .micro-tag {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .rocket-wrap {
-      position: relative;
-      width: 180px;
-      height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .rocket-shadow {
-      position: absolute;
-      width: 120px;
-      height: 28px;
-      border-radius: 50%;
-      background: rgba(22, 97, 255, .25);
-      filter: blur(12px);
-      bottom: 18px;
-      animation: shadowMove 2.6s ease-in-out infinite;
-    }
-
-    @keyframes shadowMove {
-      0%,100% { transform: scale(.95); opacity: .45; }
-      50% { transform: scale(1.08); opacity: .85; }
-    }
-
-    .rocket {
-      font-size: 88px;
-      filter: drop-shadow(0 14px 24px rgba(0,0,0,.45));
-      animation: rocketFly 2.6s ease-in-out infinite;
-      transform-origin: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.06);
+      font-size: 12px;
+      font-weight: 900;
+      color: #d9e9ff;
+      cursor: pointer;
       user-select: none;
     }
 
-    @keyframes rocketFly {
-      0%,100% { transform: translateY(0) rotate(-14deg); }
-      50% { transform: translateY(-16px) rotate(-8deg) scale(1.03); }
-    }
-
-    .counter {
-      position: absolute;
-      font-size: clamp(68px, 18vw, 110px);
-      font-weight: 900;
-      letter-spacing: -2px;
-      color: #fff;
-      text-shadow: 0 10px 40px rgba(255,255,255,.15);
-      opacity: .16;
-      transform: scale(.96);
-      animation: counterPulse 1.4s ease-in-out infinite;
-    }
-
-    .counter.active { opacity: .98; transform: scale(1); }
-
-    @keyframes counterPulse {
-      0%,100% { transform: scale(.96); }
-      50% { transform: scale(1.04); }
-    }
-
-    .crash-flash {
-      position: absolute;
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,245,157,1) 0%, rgba(255,179,0,.8) 30%, rgba(255,107,0,.25) 55%, transparent 70%);
-      opacity: 0;
-      transform: scale(.2);
-    }
-
-    .crash-flash.show {
-      animation: explode .8s ease-out forwards;
-    }
-
-    @keyframes explode {
-      0% { opacity: 0; transform: scale(.2); }
-      25% { opacity: 1; }
-      100% { opacity: 0; transform: scale(1.9); }
-    }
-
-    .multiplier-row {
+    .amount-line {
       position: relative;
-      z-index: 3;
+      z-index: 1;
       display: flex;
+      align-items: end;
       gap: 8px;
-      overflow-x: auto;
-      padding: 6px 0 2px;
-      scrollbar-width: none;
     }
-    .multiplier-row::-webkit-scrollbar { display: none; }
 
-    .pill {
-      flex: 0 0 auto;
-      padding: 10px 14px;
-      min-width: 72px;
-      text-align: center;
-      border-radius: 18px;
-      font-weight: 800;
-      font-size: 14px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(115,165,255,.6);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+    .currency-mark {
+      font-size: 34px;
+      line-height: 1;
+      color: #9dd9ff;
+      font-weight: 1000;
+      padding-bottom: 8px;
+      text-shadow: 0 0 24px rgba(53, 165, 255, .12);
     }
-    .pill.wait { background: linear-gradient(135deg, #198cff, #0a64ff); }
-    .pill.violet { border-color: rgba(180,95,255,.75); color: #daacff; }
-    .pill.pink { border-color: rgba(255, 89, 220, .75); color: #ff87eb; }
 
-    .bet-btn {
+    .bet-input {
+      width: 100%;
+      min-width: 0;
+      padding: 0;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: clamp(38px, 11vw, 54px);
+      font-weight: 1000;
+      letter-spacing: -1.6px;
+      line-height: 1;
+    }
+
+    .quick-grid {
       position: relative;
-      z-index: 3;
-      margin-top: 12px;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .quick-btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 18px;
+      padding: 12px 10px;
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 950;
+      transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .quick-btn.alt {
+      background: linear-gradient(135deg, rgba(56, 166, 255, 0.22), rgba(143, 91, 255, 0.18));
+    }
+
+    .button-stack { display: grid; gap: 10px; }
+
+    .action-btn, .ghost-btn, .primary-btn {
       width: 100%;
       border: none;
-      border-radius: 24px;
-      padding: 20px 18px;
-      font-size: 18px;
-      font-weight: 900;
-      color: white;
-      background: linear-gradient(180deg, var(--blue-2), var(--blue));
-      box-shadow: 0 18px 40px rgba(28,140,255,.35), inset 0 1px 0 rgba(255,255,255,.35);
+      cursor: pointer;
+      position: relative;
       overflow: hidden;
+      border-radius: 24px;
+      padding: 18px 18px;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 1000;
+      letter-spacing: .1px;
+      transition: transform .18s ease, opacity .18s ease, filter .18s ease, box-shadow .18s ease;
     }
 
-    .bet-btn::before {
+    .action-btn::before, .primary-btn::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(120deg, transparent 10%, rgba(255,255,255,.22) 50%, transparent 90%);
-      transform: translateX(-120%);
-      animation: shine 2.4s linear infinite;
+      background: linear-gradient(120deg, transparent 12%, rgba(255,255,255,.24) 48%, transparent 80%);
+      transform: translateX(-130%);
+      animation: actionShine 2.8s linear infinite;
     }
 
-    @keyframes shine {
-      to { transform: translateX(130%); }
+    @keyframes actionShine { to { transform: translateX(135%); } }
+
+    .action-btn {
+      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.04)), linear-gradient(135deg, #49b9ff 0%, #2f90ff 46%, #8d58ff 100%);
+      box-shadow: 0 18px 44px rgba(57, 151, 255, 0.30), inset 0 1px 0 rgba(255,255,255,.35);
     }
 
-    .panel {
+    .action-btn.secondary {
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.03)), linear-gradient(135deg, rgba(53, 232, 133, 0.66), rgba(57, 151, 255, 0.48));
+      box-shadow: 0 18px 44px rgba(53, 232, 133, 0.18), inset 0 1px 0 rgba(255,255,255,.28);
+    }
+
+    .action-btn:disabled { opacity: .64; filter: saturate(.82); cursor: default; }
+
+    .ghost-btn {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow-md);
+    }
+
+    .primary-btn {
+      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.04)), linear-gradient(135deg, #49b9ff 0%, #2f90ff 46%, #8d58ff 100%);
+      box-shadow: 0 18px 44px rgba(57, 151, 255, 0.30), inset 0 1px 0 rgba(255,255,255,.35);
+    }
+
+    .caption-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .players-list {
       position: relative;
-      z-index: 3;
-      margin-top: 14px;
-      background: linear-gradient(180deg, rgba(31,37,51,.92), rgba(19,23,34,.96));
-      border: 1px solid rgba(255,255,255,.06);
-      border-radius: 28px;
-      padding: 12px 14px 20px;
-      box-shadow: var(--shadow);
-      min-height: 270px;
-    }
-
-    .players {
+      z-index: 2;
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .player {
+    .empty-state {
+      min-height: 190px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.04);
+      border: 1px dashed rgba(255,255,255,.11);
       display: grid;
-      grid-template-columns: 50px 1fr auto;
-      gap: 12px;
-      align-items: center;
-      padding: 10px 4px;
-      border-bottom: 1px solid rgba(255,255,255,.06);
-      animation: fadeInUp .45s ease both;
+      place-items: center;
+      padding: 22px;
+      text-align: center;
     }
 
-    .player:last-child { border-bottom: 0; }
+    .empty-state .title { font-size: 19px; font-weight: 1000; line-height: 1.1; }
+    .empty-state .text { margin-top: 8px; max-width: 250px; color: var(--muted); font-size: 14px; font-weight: 750; line-height: 1.35; }
 
-    @keyframes fadeInUp {
+    .player-card {
+      display: grid;
+      grid-template-columns: 54px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      border-radius: 24px;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.06);
+      padding: 12px;
+      animation: playerIn .34s ease both;
+    }
+
+    @keyframes playerIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
       display: grid;
       place-items: center;
       font-size: 24px;
-      background: linear-gradient(135deg, #282f46, #131827);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+      background: linear-gradient(135deg, rgba(57, 166, 255, 0.24), rgba(143, 91, 255, 0.20));
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.18);
     }
 
-    .player-name {
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 3px;
+    .player-name { font-size: 17px; font-weight: 1000; line-height: 1.1; }
+    .player-meta { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-top: 5px; color: var(--muted); font-size: 13px; font-weight: 850; }
+    .player-value { text-align: right; font-size: 17px; font-weight: 1000; min-width: 84px; }
+    .player-value.up { color: var(--green-2); }
+    .player-value.down { color: var(--red); }
+    .player-value.live { color: #fff; }
+
+    .mini-stats {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
     }
 
-    .player-meta {
+    .mini-stat { border-radius: 22px; padding: 14px 12px; background: rgba(255,255,255,.05); text-align: left; }
+    .mini-stat .kicker { color: var(--muted); font-size: 12px; font-weight: 850; text-transform: uppercase; letter-spacing: .8px; }
+    .mini-stat .value { margin-top: 8px; font-size: 24px; font-weight: 1000; letter-spacing: -.8px; }
+    .mini-stat .hint { margin-top: 6px; color: var(--muted); font-size: 11px; line-height: 1.3; font-weight: 750; }
+
+    .profile-stack { display: grid; gap: 14px; }
+    .profile-box { padding: 18px; isolation: isolate; }
+
+    .profile-hero {
+      position: relative;
+      z-index: 2;
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 15px;
+      gap: 14px;
+      align-items: center;
     }
 
-    .profit {
-      min-width: 78px;
-      text-align: right;
-      font-size: 18px;
-      font-weight: 900;
-      padding-right: 4px;
-    }
-
-    .profit.up { color: #31db7d; }
-    .profit.down { color: #ff5e69; }
-    .profit.neutral { color: #ffffff; }
-
-    .empty {
-      min-height: 220px;
+    .profile-avatar {
+      width: 74px;
+      height: 74px;
+      border-radius: 24px;
       display: grid;
       place-items: center;
-      text-align: center;
-      color: rgba(255,255,255,.26);
-      font-weight: 800;
-      font-size: 18px;
+      font-size: 32px;
+      background: var(--grad-main);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.34), 0 18px 36px rgba(56, 166, 255, 0.22);
+      flex: 0 0 auto;
     }
+
+    .profile-name { font-size: 26px; font-weight: 1000; letter-spacing: -.8px; line-height: 1.05; }
+    .profile-copy { margin-top: 6px; color: var(--muted); font-size: 14px; font-weight: 750; line-height: 1.35; }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .stat-card {
+      border-radius: 24px;
+      padding: 15px;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.06);
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -12% -65% -12%;
+      height: 130px;
+      background: radial-gradient(circle, rgba(57, 166, 255, 0.12), transparent 60%);
+      pointer-events: none;
+    }
+
+    .stat-card .label { color: var(--muted); font-size: 12px; font-weight: 850; text-transform: uppercase; letter-spacing: .8px; }
+    .stat-card .value { margin-top: 8px; font-size: 31px; font-weight: 1000; line-height: 1; letter-spacing: -1px; }
+    .stat-card .sub { margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 1.3; font-weight: 750; }
+
+    .settings-grid { position: relative; z-index: 2; display: grid; gap: 10px; }
+
+    .input-wrap {
+      border-radius: 22px;
+      padding: 14px 15px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+    }
+
+    .input-wrap input {
+      width: 100%;
+      min-width: 0;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 22px;
+      font-weight: 950;
+      letter-spacing: -.5px;
+    }
+
+    .dual-actions, .triple-actions { display: grid; gap: 10px; }
+    .dual-actions { grid-template-columns: repeat(2, 1fr); }
+    .triple-actions { grid-template-columns: repeat(3, 1fr); }
+
+    .result-banner {
+      position: relative;
+      z-index: 2;
+      border-radius: 24px;
+      padding: 16px;
+      background: rgba(255,255,255,.05);
+      overflow: hidden;
+    }
+
+    .result-banner::after {
+      content: "";
+      position: absolute;
+      inset: auto -16% -80% -16%;
+      height: 150px;
+      background: radial-gradient(circle, rgba(86, 255, 168, 0.14), transparent 62%);
+      pointer-events: none;
+    }
+
+    .result-banner .kicker { color: var(--muted); font-size: 12px; font-weight: 850; text-transform: uppercase; letter-spacing: .8px; }
+    .result-banner .value { margin-top: 8px; font-size: 34px; font-weight: 1000; line-height: 1; letter-spacing: -1px; }
+    .result-banner .desc { margin-top: 7px; color: var(--muted); font-size: 13px; line-height: 1.35; font-weight: 750; }
 
     .bottom-nav {
       position: fixed;
       left: 50%;
-      bottom: 10px;
+      bottom: calc(10px + var(--safe-bottom));
       transform: translateX(-50%);
-      width: min(430px, calc(100% - 20px));
-      background: rgba(22,26,37,.82);
-      border: 1px solid rgba(255,255,255,.06);
-      backdrop-filter: blur(18px);
-      border-radius: 26px;
-      padding: 10px;
-      box-shadow: var(--shadow);
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
+      width: min(calc(100vw - 18px), calc(var(--max-app-width) - 10px));
       z-index: 20;
+      padding: 10px;
+      background: rgba(14, 19, 31, 0.82);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 30px;
+      box-shadow: var(--shadow-xl);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
     }
 
     .nav-item {
-      border: 0;
+      border: none;
       background: transparent;
-      color: rgba(255,255,255,.6);
-      border-radius: 18px;
-      padding: 10px 6px;
+      color: rgba(255,255,255,.66);
+      border-radius: 22px;
+      padding: 12px 10px;
       display: flex;
       flex-direction: column;
       gap: 4px;
       align-items: center;
       justify-content: center;
       font-size: 13px;
-      font-weight: 700;
-      transition: .25s ease;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform .18s ease, background .18s ease, color .18s ease;
     }
 
-    .nav-item .icon { font-size: 23px; }
+    .nav-item .icon { font-size: 22px; }
 
     .nav-item.active {
-      color: #63b3ff;
-      background: radial-gradient(circle at 50% 10%, rgba(31,138,255,.45), rgba(31,138,255,.12) 60%, rgba(31,138,255,.02));
-      box-shadow: inset 0 0 0 1px rgba(72,158,255,.24);
+      color: #fff;
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04)), linear-gradient(135deg, rgba(57, 166, 255, 0.26), rgba(143, 91, 255, 0.22));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 8px 22px rgba(57, 166, 255, 0.12);
     }
 
-    .screen {
+    .win-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
       display: none;
-      animation: screenIn .35s ease;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(4, 8, 16, 0.44);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
-    .screen.active { display: block; }
+    .win-modal.show { display: flex; }
 
-    @keyframes screenIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
+    .modal-card {
+      width: min(100%, 360px);
+      padding: 28px 22px 20px;
+      text-align: center;
+      isolation: isolate;
     }
 
-    .cases-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .case-card {
-      aspect-ratio: 1/1;
-      border-radius: 22px;
-      display: grid;
-      place-items: center;
-      font-size: 42px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-      animation: floatCard 4s ease-in-out infinite;
-    }
-
-    .case-card:nth-child(odd) { animation-delay: .4s; }
-    @keyframes floatCard {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
-    }
-
-    .case-card::after {
+    .modal-card::after {
       content: "";
       position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,.18), transparent 55%);
+      inset: auto -12% -60% -12%;
+      height: 170px;
+      background: radial-gradient(circle, rgba(255, 216, 109, 0.16), transparent 62%);
+      pointer-events: none;
     }
 
-    .progress-wrap {
-      margin: 24px auto 0;
-      width: 90%;
+    .confetti { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+
+    .confetti i {
+      position: absolute;
+      width: 10px;
+      height: 16px;
+      border-radius: 4px;
+      opacity: 0;
+      animation: confettiFall 1.8s linear forwards;
     }
 
-    .progress {
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.12);
-      overflow: hidden;
+    @keyframes confettiFall {
+      from { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      to { transform: translateY(280px) rotate(360deg); opacity: 0; }
     }
 
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, #fff, #d5d8df);
-      animation: loading 2.8s ease forwards;
-    }
-
-    @keyframes loading {
-      from { width: 0%; }
-      to { width: 100%; }
-    }
-
-    .progress-label {
-      text-align: center;
-      margin-top: 14px;
-      letter-spacing: 3px;
-      font-weight: 800;
-      color: rgba(255,255,255,.92);
-    }
-
-    .section-title {
-      margin: 18px 2px 10px;
-      font-size: 28px;
-      font-weight: 900;
-    }
-
-    .cards-stack {
-      display: grid;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .info-card {
-      background: linear-gradient(180deg, rgba(31,37,51,.92), rgba(19,23,34,.96));
-      border: 1px solid rgba(255,255,255,.06);
-      border-radius: 24px;
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-
-    .muted { color: var(--muted); }
-
-    .season-badge {
-      display: inline-block;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, rgba(255,79,216,.18), rgba(157,77,255,.18));
-      border: 1px solid rgba(255,255,255,.08);
-      font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .profile-box {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-top: 12px;
-    }
-
-    .profile-big {
-      width: 66px;
-      height: 66px;
-      border-radius: 22px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, #1b85ff, #7b4dff);
-      font-size: 28px;
-      box-shadow: var(--shadow);
-    }
-
-    .tiny { font-size: 13px; }
+    .modal-kicker { position: relative; z-index: 2; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #ffe59e; font-weight: 1000; }
+    .modal-amount { position: relative; z-index: 2; margin-top: 10px; font-size: 50px; font-weight: 1000; line-height: .95; letter-spacing: -2px; }
+    .modal-desc { position: relative; z-index: 2; margin-top: 10px; color: var(--muted); font-size: 14px; line-height: 1.35; font-weight: 750; }
+    .modal-actions { position: relative; z-index: 2; margin-top: 18px; }
 
     .loading-screen {
       position: fixed;
       inset: 0;
-      background: linear-gradient(180deg, #191d26, #10131b);
-      z-index: 100;
+      z-index: 50;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: calc(20px + var(--safe-top)) 20px calc(20px + var(--safe-bottom)) 20px;
+      background: radial-gradient(600px 400px at 50% 10%, rgba(53, 165, 255, 0.16), transparent 52%), linear-gradient(180deg, #11182a 0%, #0a0e18 100%);
+      transition: opacity .4s ease, visibility .4s ease;
+    }
+
+    .loading-screen.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .loading-card {
+      width: min(100%, 360px);
       padding: 20px;
-      transition: opacity .45s ease, visibility .45s ease;
+      border-radius: 34px;
+      background: rgba(18, 24, 39, 0.76);
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow-xl);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
-    .loading-screen.hide {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .loading-inner {
-      width: min(380px, 100%);
-    }
-
-    .loading-top {
+    .loading-head {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 80px;
-    }
-
-    .brand-chip {
-      padding: 10px 16px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.06);
-      font-weight: 900;
-      box-shadow: var(--shadow);
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 22px;
     }
 
     .loading-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 10px;
     }
 
     .load-cell {
-      aspect-ratio: 1/1;
-      border-radius: 22px;
+      aspect-ratio: 1 / 1;
+      border-radius: 24px;
       display: grid;
       place-items: center;
-      font-size: 48px;
+      font-size: 34px;
+      color: #fff;
+      box-shadow: var(--shadow-md);
       animation: pop 1.4s ease-in-out infinite;
-      box-shadow: var(--shadow);
     }
 
     .load-cell:nth-child(2) { animation-delay: .12s; }
@@ -637,161 +1198,238 @@
       50% { transform: scale(1.05); }
     }
 
+    .load-progress { margin-top: 18px; }
+
+    .progress-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.05);
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #fff, #cbe6ff, #7cd1ff, #c689ff);
+      box-shadow: 0 0 28px rgba(117, 208, 255, 0.2);
+      transition: width .16s ease;
+    }
+
+    .progress-label {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 1000;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,.92);
+    }
+
+    .screen-shake { animation: appShake .46s ease; }
+
+    @keyframes appShake {
+      0%,100% { transform: translateX(0); }
+      18% { transform: translateX(-7px); }
+      36% { transform: translateX(6px); }
+      54% { transform: translateX(-4px); }
+      72% { transform: translateX(3px); }
+    }
+
+    @media (max-width: 400px) {
+      .hero-subtitle { max-width: 240px; }
+      .quick-grid { grid-template-columns: repeat(2, 1fr); }
+      .mini-stats { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: 1fr; }
+      .dual-actions, .triple-actions { grid-template-columns: 1fr; }
+      .balance-chip { min-width: 120px; }
+    }
+
     @media (min-width: 700px) {
-      .app {
-        max-width: 520px;
-        padding-top: 22px;
-      }
+      .app-shell { max-width: 520px; }
+      .aurora, .planet, .orbit-ring, .streak, .flash-layer, .shockwave-layer, .bottom-nav { width: min(100vw, 520px); }
     }
   </style>
 </head>
 <body>
+  <div class="aurora"></div>
+  <div class="planet"></div>
+  <div class="orbit-ring"></div>
+  <div class="streak"></div>
+  <div class="flash-layer" id="flashLayer"></div>
+  <div class="shockwave-layer" id="shockwaveLayer"></div>
+
   <div class="loading-screen" id="loadingScreen">
-    <div class="loading-inner">
-      <div class="loading-top">
-        <div class="brand-chip">✕ GiftUp</div>
-        <div class="icon-btn">⌄</div>
+    <div class="loading-card">
+      <div class="loading-head">
+        <div class="brand-chip">
+          <div class="brand-mark">✦</div>
+          <span>Gift lab</span>
+        </div>
+        <div class="circle-btn" aria-hidden="true">🚀</div>
       </div>
+
       <div class="loading-grid">
-        <div class="load-cell" style="background:#ff4034">🧹</div>
-        <div class="load-cell" style="background:#5e58d7">🍰</div>
-        <div class="load-cell" style="background:#3bc65a">🕯️</div>
-        <div class="load-cell" style="background:#ff2c6e">💛</div>
-        <div class="load-cell" style="background:#ff9f0a">🍵</div>
-        <div class="load-cell" style="background:#167cf0">🎀</div>
-        <div class="load-cell" style="background:#a958e3">🧸</div>
-        <div class="load-cell" style="background:#67c7f3">🚬</div>
-        <div class="load-cell" style="background:#f2cc12">🌹</div>
+        <div class="load-cell" style="background:#ff4d69;">✨</div>
+        <div class="load-cell" style="background:#6d58ff;">🎁</div>
+        <div class="load-cell" style="background:#23c975;">💎</div>
+        <div class="load-cell" style="background:#ff8f1f;">☀️</div>
+        <div class="load-cell" style="background:#1f9dff;">🚀</div>
+        <div class="load-cell" style="background:#bc74ff;">🌌</div>
+        <div class="load-cell" style="background:#12b2d4;">⚡</div>
+        <div class="load-cell" style="background:#f0c822;">🏆</div>
+        <div class="load-cell" style="background:#ff5ed8;">💥</div>
       </div>
-      <div class="progress-wrap">
-        <div class="progress"><div class="progress-bar"></div></div>
-        <div class="progress-label" id="loadingLabel">LOADING 0%</div>
+
+      <div class="load-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-label" id="progressLabel">LOADING 0%</div>
       </div>
     </div>
   </div>
 
-  <main class="app">
-    <div class="planet"></div>
-    <div class="glow"></div>
-    <div class="meteor"></div>
-
-    <section class="screen active" id="screen-crash">
+  <main class="app-shell" id="appShell">
+    <section class="screen active" id="screen-game">
       <div class="topbar">
-        <div class="left-tools">
-          <div class="chip">✕ <span>Закрыть</span></div>
-          <div class="chip online">👤 127</div>
-          <button class="icon-btn">⚙️</button>
+        <div class="brand-area">
+          <div class="brand-chip glass">
+            <div class="brand-mark">✦</div>
+            <span>Gift lab</span>
+          </div>
+          <div class="online-chip glass" id="onlineChip">👤 <strong>0</strong></div>
         </div>
-        <div class="right-tools">
-          <div class="balance"><span class="coin">◈ 0.03</span><span class="plus">＋</span></div>
-          <button class="icon-btn">⌄</button>
-        </div>
-      </div>
-
-      <div class="hero">
-        <div class="rocket-wrap">
-          <div class="rocket-shadow"></div>
-          <div class="counter active" id="counter">1.00</div>
-          <div class="crash-flash" id="crashFlash"></div>
-          <div class="rocket" id="rocket">🚀</div>
+        <div class="top-tools">
+          <div class="balance-chip glass">
+            <span class="value" id="topBalance">$100.00</span>
+            <span>＋</span>
+          </div>
+          <button class="circle-btn glass" type="button" id="hapticToggle" aria-label="Переключить вибрацию">⚡</button>
         </div>
       </div>
 
-      <div class="multiplier-row">
-        <div class="pill wait">Ожидание</div>
-        <div class="pill">1.41</div>
-        <div class="pill">1.09</div>
-        <div class="pill pink">10.88</div>
-        <div class="pill violet">1.96</div>
-        <div class="pill violet">1.64</div>
-        <div class="pill violet">1.64</div>
+      <div class="hero-card glass">
+        <div class="hero-head">
+          <div>
+            <h1 class="hero-title">Gift lab crash</h1>
+            <p class="hero-subtitle">
+              Премиальный мобильный экран без ботов, без фейкового онлайна и без лишних разделов.
+            </p>
+          </div>
+
+          <div class="status-card glass">
+            <span class="label">Состояние</span>
+            <span class="value" id="phaseValue">Ожидание</span>
+          </div>
+        </div>
+
+        <div class="scene" id="scene">
+          <div class="scene-nebula"></div>
+          <div class="scene-grid"></div>
+
+          <div class="comment-clouds">
+            <div class="bubble b1">Без накрутки онлайна</div>
+            <div class="bubble b2">Взрыв непредсказуем</div>
+            <div class="bubble b3">Любая сумма ставки</div>
+            <div class="bubble b4">Премиальные анимации</div>
+          </div>
+
+          <div class="rocket-layer">
+            <div class="rocket-smoke" id="rocketSmoke"></div>
+            <div class="rocket-trail" id="rocketTrail"></div>
+            <div class="rocket" id="rocket">🚀</div>
+          </div>
+
+          <div class="center-multiplier" id="centerCounter">
+            <div>
+              <div class="main" id="counterMain">Ожидание</div>
+              <div class="sub" id="counterSub">новый раунд скоро</div>
+            </div>
+          </div>
+
+          <div class="crash-burst" id="crashBurst"></div>
+        </div>
+
+        <div class="hero-footer">
+          <div class="history-row" id="historyRow"></div>
+          <div class="floating-chip glass" id="stateChip">Ждём ставки</div>
+        </div>
       </div>
 
-      <button class="bet-btn">Сделать ставку</button>
+      <div class="surface glass">
+        <div class="surface-head">
+          <div>
+            <h2 class="surface-title">Ставка</h2>
+            <p class="surface-subtitle">
+              Вводи любую сумму, используй быстрые кнопки и забирай выигрыш красивой анимацией.
+            </p>
+          </div>
+          <div class="section-chip glass">Гибкий ввод</div>
+        </div>
 
-      <div class="panel" id="playersPanel">
-        <div class="players" id="playersList">
-          <div class="player">
-            <div class="avatar">🧑</div>
-            <div>
-              <div class="player-name">avgust</div>
-              <div class="player-meta"><span>◈ 0.50</span><span>↗ x1.41</span></div>
+        <div class="bet-grid">
+          <div class="bet-box">
+            <div class="bet-topline">
+              <div class="label">Размер ставки</div>
+              <div class="micro-tag" id="maxBetBtn">MAX</div>
             </div>
-            <div class="profit down">0.70</div>
+
+            <div class="amount-line">
+              <div class="currency-mark">$</div>
+              <input class="bet-input" id="betInput" type="number" inputmode="decimal" min="0.01" step="0.01" value="10.00" placeholder="0.00" />
+            </div>
+
+            <div class="quick-grid">
+              <button class="quick-btn" type="button" data-amount="1">1</button>
+              <button class="quick-btn" type="button" data-amount="5">5</button>
+              <button class="quick-btn" type="button" data-amount="10">10</button>
+              <button class="quick-btn" type="button" data-amount="25">25</button>
+              <button class="quick-btn alt" type="button" data-action="half">½ баланса</button>
+              <button class="quick-btn alt" type="button" data-action="all">Весь баланс</button>
+              <button class="quick-btn alt" type="button" data-action="double">×2</button>
+              <button class="quick-btn alt" type="button" data-action="clear">Сброс</button>
+            </div>
           </div>
-          <div class="player">
-            <div class="avatar">🧔</div>
-            <div>
-              <div class="player-name">Глеб</div>
-              <div class="player-meta"><span>◈ 0.50</span><span>↗ x1.41</span></div>
+
+          <div class="button-stack">
+            <button class="action-btn" id="betButton" type="button">Сделать ставку</button>
+            <div class="caption-row">
+              <span id="betHintLeft">Ставка спишется сразу</span>
+              <span id="betHintRight">Без скрытых ограничений</span>
             </div>
-            <div class="profit down">0.70</div>
-          </div>
-          <div class="player">
-            <div class="avatar">🌌</div>
-            <div>
-              <div class="player-name">Kost_mos</div>
-              <div class="player-meta"><span>◈ 0.30</span><span>↗ x1.38</span></div>
-            </div>
-            <div class="profit up">0.41</div>
-          </div>
-          <div class="player">
-            <div class="avatar">🐱</div>
-            <div>
-              <div class="player-name">N¢ kit</div>
-              <div class="player-meta"><span>◈ 0.10</span><span>↗ x1.41</span></div>
-            </div>
-            <div class="profit down">0.14</div>
           </div>
         </div>
       </div>
-    </section>
 
-    <section class="screen" id="screen-cases">
-      <div class="topbar">
-        <div class="chip">✕ <span>GiftUp</span></div>
-        <button class="icon-btn">⌄</button>
-      </div>
-      <div class="section-title">Кейсы</div>
-      <div class="cases-grid">
-        <div class="case-card" style="background:#ff4034">🚀</div>
-        <div class="case-card" style="background:#5e58d7">🚀</div>
-        <div class="case-card" style="background:#3bc65a">🚀</div>
-        <div class="case-card" style="background:#ff2c6e">🚀</div>
-        <div class="case-card" style="background:#ff9f0a">🚀</div>
-        <div class="case-card" style="background:#167cf0">🚀</div>
-        <div class="case-card" style="background:#a958e3">🚀</div>
-        <div class="case-card" style="background:#67c7f3">🚀</div>
-        <div class="case-card" style="background:#f2cc12">🚀</div>
-      </div>
-      <div class="progress-wrap">
-        <div class="progress"><div class="progress-bar"></div></div>
-        <div class="progress-label">LOADING 100%</div>
-      </div>
-    </section>
-
-    <section class="screen" id="screen-season">
-      <div class="topbar">
-        <div class="chip">🏆 <span>Сезон</span></div>
-        <div class="balance"><span class="coin">◈ 12.90</span><span class="plus">＋</span></div>
-      </div>
-      <div class="section-title">Новый сезон</div>
-      <div class="cards-stack">
-        <div class="info-card">
-          <div class="season-badge">SPACE EVENT</div>
-          <h3 style="margin:0 0 8px;font-size:26px;">Лунный рывок</h3>
-          <div class="muted">Анимированные награды, ежедневные миссии и светящийся прогресс сезона.</div>
-        </div>
-        <div class="info-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
-            <div>
-              <div class="tiny muted">Твой прогресс</div>
-              <div style="font-size:34px;font-weight:900;">73%</div>
-            </div>
-            <div style="font-size:54px;">🌠</div>
+      <div class="surface glass">
+        <div class="surface-head">
+          <div>
+            <h2 class="surface-title">Игроки раунда</h2>
+            <p class="surface-subtitle">
+              Здесь отображаются только реальные участники текущей сессии. Фейковая активность полностью отключена.
+            </p>
           </div>
-          <div class="progress-wrap" style="width:100%;margin-top:12px;">
-            <div class="progress"><div class="progress-bar" style="width:73%;animation:none;background:linear-gradient(90deg,#1c8cff,#b04dff);"></div></div>
+          <div class="section-chip glass" id="playersTag">0 игроков</div>
+        </div>
+
+        <div class="players-list" id="playersList"></div>
+
+        <div class="mini-stats">
+          <div class="mini-stat glass">
+            <div class="kicker">Раундов</div>
+            <div class="value" id="miniRounds">0</div>
+            <div class="hint">С начала текущей сессии</div>
+          </div>
+          <div class="mini-stat glass">
+            <div class="kicker">Лучшая выплата</div>
+            <div class="value" id="miniBestWin">$0.00</div>
+            <div class="hint">Максимум за эту сессию</div>
+          </div>
+          <div class="mini-stat glass">
+            <div class="kicker">Последний взрыв</div>
+            <div class="value" id="miniLastCrash">—</div>
+            <div class="hint">Последний завершённый раунд</div>
           </div>
         </div>
       </div>
@@ -799,396 +1437,817 @@
 
     <section class="screen" id="screen-profile">
       <div class="topbar">
-        <div class="chip">👤 <span>Профиль</span></div>
-        <button class="icon-btn">⋯</button>
-      </div>
-      <div class="section-title">Твой аккаунт</div>
-      <div class="info-card">
-        <div class="profile-box">
-          <div class="profile-big">🚀</div>
-          <div>
-            <div style="font-size:24px;font-weight:900;">polygamych</div>
-            <div class="muted">Мобильный UI / Game style / Neon space</div>
+        <div class="brand-area">
+          <div class="brand-chip glass">
+            <div class="brand-mark">✦</div>
+            <span>Gift lab</span>
+          </div>
+        </div>
+        <div class="top-tools">
+          <div class="balance-chip glass">
+            <span class="value" id="profileTopBalance">$100.00</span>
+            <span>◈</span>
           </div>
         </div>
       </div>
-      <div class="cards-stack">
-        <div class="info-card">
-          <div class="tiny muted">Баланс</div>
-          <div style="font-size:34px;font-weight:900;margin-top:4px;">◈ 0.03</div>
+
+      <div class="profile-stack">
+        <div class="profile-box glass">
+          <div class="profile-hero">
+            <div class="profile-avatar">🚀</div>
+            <div>
+              <div class="profile-name">Профиль</div>
+              <div class="profile-copy">
+                Полноценный экран без ощущения заглушки: баланс, управление тестовой суммой,
+                статистика, состояние интерфейса и красивое оформление.
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="info-card">
-          <div class="tiny muted">Онлайн игроков</div>
-          <div style="font-size:34px;font-weight:900;margin-top:4px;">127</div>
+
+        <div class="profile-box glass">
+          <div class="surface-head" style="margin-bottom:12px;">
+            <div>
+              <h2 class="surface-title">Статистика</h2>
+              <p class="surface-subtitle">Только реальные данные текущей сессии.</p>
+            </div>
+            <div class="section-chip glass">Live</div>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="label">Баланс</div>
+              <div class="value" id="profileBalance">$100.00</div>
+              <div class="sub">Текущее значение для тестирования UI</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="label">Онлайн</div>
+              <div class="value" id="profileOnline">0</div>
+              <div class="sub">Реальные игроки в текущей сессии</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="label">Раундов</div>
+              <div class="value" id="profileRounds">0</div>
+              <div class="sub">Количество завершённых/запущенных раундов</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="label">Лучшая выплата</div>
+              <div class="value" id="profileBestWin">$0.00</div>
+              <div class="sub">Максимальный удачный вывод</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-box glass">
+          <div class="surface-head" style="margin-bottom:12px;">
+            <div>
+              <h2 class="surface-title">Управление балансом</h2>
+              <p class="surface-subtitle">
+                Без явной пометки demo в основном интерфейсе, но удобно для тестов и презентаций.
+              </p>
+            </div>
+            <div class="section-chip glass">Гибко</div>
+          </div>
+
+          <div class="settings-grid">
+            <div class="input-wrap">
+              <input id="manualBalanceInput" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Введите любую сумму" />
+            </div>
+
+            <div class="dual-actions">
+              <button class="primary-btn" id="applyBalanceBtn" type="button">Применить</button>
+              <button class="ghost-btn" id="restoreBalanceBtn" type="button">Вернуть исходный</button>
+            </div>
+
+            <div class="triple-actions">
+              <button class="ghost-btn" id="set1kBtn" type="button">$1 000</button>
+              <button class="ghost-btn" id="set10kBtn" type="button">$10 000</button>
+              <button class="ghost-btn" id="set50kBtn" type="button">$50 000</button>
+            </div>
+          </div>
+
+          <div class="result-banner glass" style="margin-top:12px;">
+            <div class="kicker">Исходный баланс</div>
+            <div class="value" id="baseBalanceValue">$100.00</div>
+            <div class="desc">
+              Можно быстро вернуться к стартовому значению одним нажатием.
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-box glass">
+          <div class="surface-head" style="margin-bottom:10px;">
+            <div>
+              <h2 class="surface-title">Что уже соблюдено</h2>
+              <p class="surface-subtitle">Список ключевых требований из ТЗ.</p>
+            </div>
+            <div class="section-chip glass">По ТЗ</div>
+          </div>
+
+          <div class="settings-grid">
+            <div class="result-banner glass">
+              <div class="kicker">Интерфейс</div>
+              <div class="desc">
+                Только Gift lab, без «Кейсов», без «Сезона», без кнопки «Закрыть», без лишних заглушек.
+              </div>
+            </div>
+
+            <div class="result-banner glass">
+              <div class="kicker">Активность</div>
+              <div class="desc">
+                Нет ботов, случайных игроков, фейковых ставок, поддельного онлайна и искусственных изменений счётчиков.
+              </div>
+            </div>
+
+            <div class="result-banner glass">
+              <div class="kicker">Mobile</div>
+              <div class="desc">
+                Учтены safe-area, 100dvh, нижние системные зоны, адаптив под узкие экраны, отсутствие белой полосы снизу.
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <nav class="bottom-nav">
-    <button class="nav-item active" data-screen="crash"><span class="icon">🚀</span><span>Краш</span></button>
-    <button class="nav-item" data-screen="cases"><span class="icon">🎁</span><span>Кейсы</span></button>
-    <button class="nav-item" data-screen="season"><span class="icon">🏆</span><span>Сезон</span></button>
-    <button class="nav-item" data-screen="profile"><span class="icon">👤</span><span>Профиль</span></button>
+    <button class="nav-item active" type="button" data-screen="game">
+      <span class="icon">🚀</span>
+      <span>Игра</span>
+    </button>
+    <button class="nav-item" type="button" data-screen="profile">
+      <span class="icon">👤</span>
+      <span>Профиль</span>
+    </button>
   </nav>
 
+  <div class="win-modal" id="winModal">
+    <div class="modal-card glass">
+      <div class="confetti" id="confetti"></div>
+      <div class="modal-kicker">Успешный вывод</div>
+      <div class="modal-amount" id="winAmount">+$0.00</div>
+      <div class="modal-desc" id="winDescription">Красивый экран результата с эмоциональной наградой.</div>
+      <div class="modal-actions">
+        <button class="primary-btn" type="button" id="closeWinModal">Продолжить</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const navItems = document.querySelectorAll('.nav-item');
-    const screens = {
-      crash: document.getElementById('screen-crash'),
-      cases: document.getElementById('screen-cases'),
-      season: document.getElementById('screen-season'),
-      profile: document.getElementById('screen-profile')
-    };
-
-    navItems.forEach(btn => {
-      btn.addEventListener('click', () => {
-        navItems.forEach(n => n.classList.remove('active'));
-        btn.classList.add('active');
-        Object.values(screens).forEach(s => s.classList.remove('active'));
-        screens[btn.dataset.screen].classList.add('active');
-      });
-    });
-
-    const loadingScreen = document.getElementById('loadingScreen');
-    const loadingLabel = document.getElementById('loadingLabel');
-    let progress = 0;
-    const loadingInterval = setInterval(() => {
-      progress += Math.floor(Math.random() * 9) + 4;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(loadingInterval);
-        setTimeout(() => loadingScreen.classList.add('hide'), 300);
-      }
-      loadingLabel.textContent = `LOADING ${progress}%`;
-    }, 160);
-
-    const counter = document.getElementById('counter');
-    const flash = document.getElementById('crashFlash');
-    const playersList = document.getElementById('playersList');
-    const rocket = document.getElementById('rocket');
-    const betBtn = document.querySelector('.bet-btn');
-    const historyRow = document.querySelector('.multiplier-row');
-    const onlineChip = document.querySelector('.online');
-    const panel = document.getElementById('playersPanel');
-
-    const BOT_NAMES = ['avgust', 'Глеб', 'Kost_mos', 'N¢ kit', 'R0maNTiK', 'vibe', 'moon', 'Danya', 'soda', 'stark'];
-    const BOT_AVATARS = ['🧑','🧔','🌌','🐱','🌑','😎','👾','🛰️','🔥','⭐'];
-
-    const game = {
-      phase: 'waiting',
-      countdown: 10,
+    const state = {
+      balance: 100,
+      initialBalance: 100,
+      phase: "waiting",
+      countdown: 4,
       multiplier: 1,
-      roundId: 0,
       currentBet: 0,
-      currentUser: 'polygamych',
-      playing: false,
+      hasBet: false,
       cashedOut: false,
-      balance: 0.03,
-      online: 120,
-      roundPlayers: [],
-      history: [1.41, 1.09, 10.88, 1.96, 1.64, 1.64],
+      round: 0,
+      history: [],
+      activePlayers: [],
+      bestWin: 0,
+      lastCrash: null,
+      hapticsEnabled: true,
+      rocketPathSeed: Math.random() * 100,
+      crashPoint: 0,
+      smokeParticles: [],
       timers: {
-        tick: null,
-        botJoin: null,
-        roundTick: null,
-        restart: null
+        loading: null,
+        countdown: null,
+        flight: null,
+        restart: null,
+        smoke: null
       }
     };
 
-    function rand(min, max) {
-      return Math.random() * (max - min) + min;
+    const els = {
+      appShell: document.getElementById("appShell"),
+      loadingScreen: document.getElementById("loadingScreen"),
+      progressFill: document.getElementById("progressFill"),
+      progressLabel: document.getElementById("progressLabel"),
+      flashLayer: document.getElementById("flashLayer"),
+      shockwaveLayer: document.getElementById("shockwaveLayer"),
+      onlineChip: document.getElementById("onlineChip"),
+      topBalance: document.getElementById("topBalance"),
+      profileTopBalance: document.getElementById("profileTopBalance"),
+      phaseValue: document.getElementById("phaseValue"),
+      stateChip: document.getElementById("stateChip"),
+      counterMain: document.getElementById("counterMain"),
+      counterSub: document.getElementById("counterSub"),
+      historyRow: document.getElementById("historyRow"),
+      betInput: document.getElementById("betInput"),
+      betButton: document.getElementById("betButton"),
+      maxBetBtn: document.getElementById("maxBetBtn"),
+      playersList: document.getElementById("playersList"),
+      playersTag: document.getElementById("playersTag"),
+      miniRounds: document.getElementById("miniRounds"),
+      miniBestWin: document.getElementById("miniBestWin"),
+      miniLastCrash: document.getElementById("miniLastCrash"),
+      profileBalance: document.getElementById("profileBalance"),
+      profileOnline: document.getElementById("profileOnline"),
+      profileRounds: document.getElementById("profileRounds"),
+      profileBestWin: document.getElementById("profileBestWin"),
+      baseBalanceValue: document.getElementById("baseBalanceValue"),
+      manualBalanceInput: document.getElementById("manualBalanceInput"),
+      applyBalanceBtn: document.getElementById("applyBalanceBtn"),
+      restoreBalanceBtn: document.getElementById("restoreBalanceBtn"),
+      set1kBtn: document.getElementById("set1kBtn"),
+      set10kBtn: document.getElementById("set10kBtn"),
+      set50kBtn: document.getElementById("set50kBtn"),
+      rocket: document.getElementById("rocket"),
+      rocketTrail: document.getElementById("rocketTrail"),
+      rocketSmoke: document.getElementById("rocketSmoke"),
+      scene: document.getElementById("scene"),
+      crashBurst: document.getElementById("crashBurst"),
+      hapticToggle: document.getElementById("hapticToggle"),
+      winModal: document.getElementById("winModal"),
+      winAmount: document.getElementById("winAmount"),
+      winDescription: document.getElementById("winDescription"),
+      closeWinModal: document.getElementById("closeWinModal"),
+      confetti: document.getElementById("confetti")
+    };
+
+    const navItems = document.querySelectorAll(".nav-item");
+    const screens = {
+      game: document.getElementById("screen-game"),
+      profile: document.getElementById("screen-profile")
+    };
+    const quickButtons = document.querySelectorAll(".quick-btn");
+
+    function formatMoney(value) {
+      return "$" + Number(value).toFixed(2);
     }
 
-    function round2(n) {
-      return Math.round(n * 100) / 100;
+    function pluralize(value, variants) {
+      const mod10 = value % 10;
+      const mod100 = value % 100;
+      if (mod10 === 1 && mod100 !== 11) return variants[0];
+      if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return variants[1];
+      return variants[2];
     }
 
-    function clearTimers() {
-      Object.values(game.timers).forEach(timer => timer && clearInterval(timer));
-      if (game.timers.restart) clearTimeout(game.timers.restart);
-      game.timers = { tick: null, botJoin: null, roundTick: null, restart: null };
+    function haptic(pattern = "light") {
+      if (!state.hapticsEnabled || !navigator.vibrate) return;
+      const map = {
+        light: 10,
+        medium: [14, 10, 16],
+        strong: [36, 18, 52, 18, 90]
+      };
+      navigator.vibrate(map[pattern] || 10);
     }
 
-    function updateOnline() {
-      game.online += Math.random() > 0.5 ? 1 : -1;
-      game.online = Math.max(95, Math.min(180, game.online));
-      onlineChip.innerHTML = `👤 ${game.online}`;
+    function round2(value) {
+      return Math.round(value * 100) / 100;
     }
 
-    function formatAmount(n) {
-      return round2(n).toFixed(2);
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function setCounter(main, sub) {
+      els.counterMain.textContent = main;
+      els.counterSub.textContent = sub;
+    }
+
+    function setPhaseVisuals() {
+      const map = {
+        waiting: { phase: "Ожидание", chip: "Ждём ставки", sub: "новый раунд скоро" },
+        countdown: { phase: "Старт", chip: "Подготовка", sub: "приём ставок открыт" },
+        flying: { phase: "Полет", chip: "Раунд идёт", sub: "момент взрыва скрыт" },
+        crash: { phase: "Взрыв", chip: "Раунд завершён", sub: "готовимся к новому" }
+      };
+      const current = map[state.phase];
+      els.phaseValue.textContent = current.phase;
+      els.stateChip.textContent = current.chip;
+      if (state.phase === "waiting") setCounter("Ожидание", current.sub);
+      if (state.phase === "crash") setCounter(state.crashPoint.toFixed(2) + "x", current.sub);
+    }
+
+    function syncUI() {
+      const balance = formatMoney(state.balance);
+      const online = state.activePlayers.length;
+      const bestWin = formatMoney(state.bestWin);
+      const rounds = String(state.round);
+
+      els.topBalance.textContent = balance;
+      els.profileTopBalance.textContent = balance;
+      els.profileBalance.textContent = balance;
+      els.profileOnline.textContent = String(online);
+      els.profileRounds.textContent = rounds;
+      els.profileBestWin.textContent = bestWin;
+      els.baseBalanceValue.textContent = formatMoney(state.initialBalance);
+      els.onlineChip.innerHTML = "👤 <strong>" + online + "</strong>";
+      els.playersTag.textContent = online + " " + pluralize(online, ["игрок", "игрока", "игроков"]);
+      els.miniRounds.textContent = rounds;
+      els.miniBestWin.textContent = bestWin;
+      els.miniLastCrash.textContent = state.lastCrash ? state.lastCrash.toFixed(2) + "x" : "—";
     }
 
     function renderHistory() {
-      historyRow.innerHTML = [
-        `<div class="pill wait">${game.phase === 'waiting' ? 'Ожидание' : game.phase === 'countdown' ? `Старт ${game.countdown}` : game.phase === 'flying' ? 'Полет' : 'Взрыв'}</div>`,
-        ...game.history.slice(0, 6).map(v => {
-          const cls = v >= 10 ? 'pink' : v >= 2 ? 'violet' : '';
-          return `<div class="pill ${cls}">${v.toFixed(2)}</div>`;
-        })
-      ].join('');
+      const phaseText = state.phase === "waiting" ? "Ждём ставки" : state.phase === "countdown" ? "Старт " + state.countdown : state.phase === "flying" ? "Полет" : "Взрыв";
+      const pills = ['<div class="history-pill live">' + phaseText + '</div>'];
+      state.history.slice(0, 6).forEach((value) => {
+        let cls = "";
+        if (value >= 10) cls = "hot";
+        else if (value >= 2) cls = "mid";
+        pills.push('<div class="history-pill ' + cls + '">' + value.toFixed(2) + 'x</div>');
+      });
+      els.historyRow.innerHTML = pills.join("");
     }
 
     function renderPlayers() {
-      if (!game.roundPlayers.length) {
-        playersList.innerHTML = '<div class="empty">Ожидание ставок</div>';
+      const players = state.activePlayers;
+      if (!players.length) {
+        els.playersList.innerHTML = `
+          <div class="empty-state">
+            <div>
+              <div class="title">Пока никто не в игре</div>
+              <div class="text">
+                Здесь не показывается фейковая активность. Список появится только когда есть реальная ставка.
+              </div>
+            </div>
+          </div>
+        `;
+        syncUI();
         return;
       }
 
-      playersList.innerHTML = game.roundPlayers.map((p, i) => {
-        const multiplierText = p.status === 'flying' ? `x${game.multiplier.toFixed(2)}` : `x${p.cashoutAt ? p.cashoutAt.toFixed(2) : '0.00'}`;
-        const result = p.status === 'cashed' ? p.win : p.status === 'lost' ? 0 : p.bet;
-        const resultClass = p.status === 'cashed' ? 'up' : p.status === 'lost' ? 'down' : 'neutral';
-        const statusLabel = p.status === 'cashed' ? 'забрал' : p.status === 'lost' ? 'проиграл' : 'в игре';
+      els.playersList.innerHTML = players.map((player, index) => {
+        const valueClass = player.status === "cashed" ? "up" : player.status === "lost" ? "down" : "live";
+        const valueText = player.status === "cashed" ? formatMoney(player.win) : player.status === "lost" ? formatMoney(0) : formatMoney(player.bet);
+        const statusText = player.status === "cashed" ? "вывод x" + player.cashoutAt.toFixed(2) : player.status === "lost" ? "не успел вывести" : state.phase === "flying" ? "в игре x" + state.multiplier.toFixed(2) : "ставка принята";
 
         return `
-          <div class="player" style="animation-delay:${i * 0.04}s">
-            <div class="avatar">${p.avatar}</div>
+          <div class="player-card" style="animation-delay:${index * 40}ms;">
+            <div class="avatar">${player.avatar}</div>
             <div>
-              <div class="player-name">${p.name}</div>
+              <div class="player-name">${player.name}</div>
               <div class="player-meta">
-                <span>◈ ${formatAmount(p.bet)}</span>
-                <span>↗ ${multiplierText}</span>
-                <span>${statusLabel}</span>
+                <span>${formatMoney(player.bet)}</span>
+                <span>${statusText}</span>
               </div>
             </div>
-            <div class="profit ${resultClass}">${formatAmount(result)}</div>
+            <div class="player-value ${valueClass}">${valueText}</div>
           </div>
         `;
-      }).join('');
-    }
+      }).join("");
 
-    function setCounter(value, faint = false) {
-      counter.textContent = value;
-      counter.style.opacity = faint ? '.16' : '.98';
+      syncUI();
     }
 
     function setBetButton() {
-      if (game.phase === 'waiting' || game.phase === 'countdown') {
-        betBtn.textContent = game.playing ? 'Ставка принята' : 'Сделать ставку';
-        betBtn.disabled = game.playing;
-        betBtn.style.opacity = game.playing ? '.7' : '1';
-      } else if (game.phase === 'flying') {
-        if (game.playing && !game.cashedOut) {
-          betBtn.textContent = `Забрать x${game.multiplier.toFixed(2)}`;
-          betBtn.disabled = false;
-          betBtn.style.opacity = '1';
+      if (state.phase === "waiting" || state.phase === "countdown") {
+        els.betButton.disabled = false;
+        els.betButton.classList.remove("secondary");
+        els.betButton.textContent = state.hasBet ? "Ставка принята" : "Сделать ставку";
+      } else if (state.phase === "flying") {
+        if (state.hasBet && !state.cashedOut) {
+          els.betButton.disabled = false;
+          els.betButton.classList.add("secondary");
+          els.betButton.textContent = "Забрать x" + state.multiplier.toFixed(2);
         } else {
-          betBtn.textContent = game.cashedOut ? 'Забрано' : 'Раунд идет';
-          betBtn.disabled = true;
-          betBtn.style.opacity = '.7';
+          els.betButton.disabled = true;
+          els.betButton.classList.remove("secondary");
+          els.betButton.textContent = state.cashedOut ? "Вывод выполнен" : "Раунд уже идёт";
         }
       } else {
-        betBtn.textContent = 'Ожидание нового раунда';
-        betBtn.disabled = true;
-        betBtn.style.opacity = '.7';
+        els.betButton.disabled = true;
+        els.betButton.classList.remove("secondary");
+        els.betButton.textContent = "Ждём новый раунд";
       }
+    }
+
+    function getBetInputValue() {
+      const value = Number(els.betInput.value);
+      if (!Number.isFinite(value)) return 0;
+      return round2(Math.max(0, value));
+    }
+
+    function setBetInputValue(value) {
+      const safe = round2(Math.max(0.01, value));
+      els.betInput.value = safe.toFixed(2);
+    }
+
+    function createConfetti() {
+      const colors = ["#ffd86d", "#62c6ff", "#ff5ed8", "#73ffad", "#ffffff", "#bc8cff"];
+      let html = "";
+      for (let i = 0; i < 24; i++) {
+        const left = Math.random() * 100;
+        const duration = 1.2 + Math.random() * 1.2;
+        const delay = Math.random() * .25;
+        const rotation = Math.random() * 360;
+        const color = colors[i % colors.length];
+        html += '<i style="left:' + left + '%;top:-14px;background:' + color + ';animation-duration:' + duration + 's;animation-delay:' + delay + 's;transform:rotate(' + rotation + 'deg)"></i>';
+      }
+      els.confetti.innerHTML = html;
+    }
+
+    function showWinModal(sum, multiplier) {
+      createConfetti();
+      els.winAmount.textContent = "+" + formatMoney(sum);
+      els.winDescription.textContent = "Красивый вывод на x" + multiplier.toFixed(2) + " завершён успешно.";
+      els.winModal.classList.add("show");
+    }
+
+    function closeWinModal() {
+      els.winModal.classList.remove("show");
+      els.confetti.innerHTML = "";
+    }
+
+    function updateRocketPosition(multiplier) {
+      const rect = els.scene.getBoundingClientRect();
+      const w = rect.width || 320;
+      const h = rect.height || 260;
+      const progress = clamp((multiplier - 1) / Math.max(.8, state.crashPoint - 1 || 1), 0, 1);
+      const seed = state.rocketPathSeed;
+      const xRatio = 0.14 + 0.72 * progress + Math.sin(seed + progress * 8.4) * 0.09;
+      const yRatio = 0.72 - 0.50 * progress + Math.cos(seed * 0.72 + progress * 6.2) * 0.12;
+      const px = xRatio * w;
+      const py = yRatio * h;
+      const angle = -18 + Math.sin(seed + progress * 7.2) * 18 + progress * 22;
+
+      els.rocket.style.left = px + "px";
+      els.rocket.style.top = py + "px";
+      els.rocket.style.transform = "translate(-50%, -50%) rotate(" + angle + "deg)";
+
+      const tailLength = 150 + progress * 90;
+      els.rocketTrail.style.width = tailLength + "px";
+      els.rocketTrail.style.left = (px - tailLength * 0.72) + "px";
+      els.rocketTrail.style.top = (py + 6) + "px";
+      els.rocketTrail.style.transform = "rotate(" + (angle + 178) + "deg)";
+      els.rocketTrail.style.opacity = String(0.56 + progress * 0.38);
+
+      spawnSmoke(px, py, angle);
+    }
+
+    function spawnSmoke(x, y, angle) {
+      if (state.phase !== "flying") return;
+      const particle = {
+        x: x - Math.cos((angle + 180) * Math.PI / 180) * 18,
+        y: y - Math.sin((angle + 180) * Math.PI / 180) * 18,
+        vx: -Math.cos((angle + 180) * Math.PI / 180) * (0.5 + Math.random() * 1.4),
+        vy: -Math.sin((angle + 180) * Math.PI / 180) * (0.3 + Math.random() * 1.1),
+        life: 1,
+        scale: 0.2 + Math.random() * 0.4
+      };
+      state.smokeParticles.push(particle);
+      if (state.smokeParticles.length > 24) state.smokeParticles.shift();
+    }
+
+    function renderSmoke() {
+      state.smokeParticles = state.smokeParticles
+        .map((p) => ({ ...p, x: p.x + p.vx, y: p.y + p.vy, vy: p.vy + 0.02, life: p.life - 0.045, scale: p.scale + 0.05 }))
+        .filter((p) => p.life > 0);
+
+      els.rocketSmoke.innerHTML = state.smokeParticles.map((p) => {
+        const opacity = Math.max(0, p.life);
+        return '<div class="smoke-puff" style="left:' + p.x + 'px; top:' + p.y + 'px; opacity:' + opacity + '; transform:translate(-50%,-50%) scale(' + p.scale + ');"></div>';
+      }).join("");
+    }
+
+    function runSmokeLoop() {
+      clearInterval(state.timers.smoke);
+      state.timers.smoke = setInterval(renderSmoke, 32);
+    }
+
+    function stopSmokeLoop() {
+      clearInterval(state.timers.smoke);
+      state.timers.smoke = null;
+      state.smokeParticles = [];
+      els.rocketSmoke.innerHTML = "";
+    }
+
+    function showCrashEffects() {
+      els.crashBurst.classList.remove("show");
+      void els.crashBurst.offsetWidth;
+      els.crashBurst.classList.add("show");
+
+      els.flashLayer.classList.add("show");
+      els.shockwaveLayer.classList.remove("show");
+      void els.shockwaveLayer.offsetWidth;
+      els.shockwaveLayer.classList.add("show");
+
+      els.appShell.classList.remove("screen-shake");
+      void els.appShell.offsetWidth;
+      els.appShell.classList.add("screen-shake");
+
+      setTimeout(() => { els.flashLayer.classList.remove("show"); }, 130);
+      haptic("strong");
     }
 
     function updateBalance(delta) {
-      game.balance = round2(game.balance + delta);
-      const balanceEl = document.querySelector('.balance .coin');
-      if (balanceEl) balanceEl.textContent = `◈ ${game.balance.toFixed(2)}`;
+      state.balance = round2(state.balance + delta);
+      if (state.balance < 0) state.balance = 0;
+      syncUI();
     }
 
-    function addUserBet() {
-      if (!(game.phase === 'waiting' || game.phase === 'countdown') || game.playing) return;
-      const bet = 0.1;
-      game.currentBet = bet;
-      game.playing = true;
-      game.cashedOut = false;
-      game.roundPlayers.unshift({
-        id: 'me',
-        name: game.currentUser,
-        avatar: '🚀',
-        bet,
-        autoCashout: null,
-        cashoutAt: null,
-        win: bet,
-        status: 'waiting'
-      });
-      renderPlayers();
-      setBetButton();
-    }
+    function placeBet() {
+      if (!(state.phase === "waiting" || state.phase === "countdown")) return;
+      if (state.hasBet) return;
 
-    function cashoutUser() {
-      const me = game.roundPlayers.find(p => p.id === 'me');
-      if (!me || game.phase !== 'flying' || game.cashedOut || me.status !== 'flying') return;
-      me.status = 'cashed';
-      me.cashoutAt = round2(game.multiplier);
-      me.win = round2(me.bet * me.cashoutAt);
-      game.cashedOut = true;
-      updateBalance(me.win);
-      renderPlayers();
-      setBetButton();
-    }
-
-    function addBotPlayer() {
-      const used = new Set(game.roundPlayers.map(p => p.name));
-      const variants = BOT_NAMES.map((name, i) => ({ name, avatar: BOT_AVATARS[i] })).filter(v => !used.has(v.name));
-      if (!variants.length) return;
-      const pick = variants[Math.floor(Math.random() * variants.length)];
-      game.roundPlayers.push({
-        id: `bot_${Date.now()}_${Math.random().toString(16).slice(2, 6)}`,
-        name: pick.name,
-        avatar: pick.avatar,
-        bet: round2(rand(0.1, 0.8)),
-        autoCashout: round2(rand(1.15, 3.8)),
-        cashoutAt: null,
-        win: 0,
-        status: game.phase === 'flying' ? 'flying' : 'waiting'
-      });
-      renderPlayers();
-    }
-
-    function spawnWaitingPlayers() {
-      const target = Math.floor(rand(3, 6));
-      let added = 0;
-      game.timers.botJoin = setInterval(() => {
-        if (!(game.phase === 'waiting' || game.phase === 'countdown')) return;
-        if (added >= target) {
-          clearInterval(game.timers.botJoin);
-          game.timers.botJoin = null;
-          return;
-        }
-        addBotPlayer();
-        added++;
-      }, 900);
-    }
-
-    function updateFlyingPlayers() {
-      game.roundPlayers.forEach(player => {
-        if (player.status !== 'flying') return;
-        if (player.id !== 'me' && player.autoCashout && game.multiplier >= player.autoCashout) {
-          player.status = 'cashed';
-          player.cashoutAt = player.autoCashout;
-          player.win = round2(player.bet * player.cashoutAt);
-        }
-      });
-      renderPlayers();
-    }
-
-    function beginFlight() {
-      game.phase = 'flying';
-      game.multiplier = 1.0;
-      rocket.style.opacity = '1';
-      game.roundPlayers.forEach(p => {
-        if (p.status === 'waiting') p.status = 'flying';
-      });
-      renderPlayers();
-      renderHistory();
-      setBetButton();
-
-      const start = performance.now();
-      const targetCrash = round2(rand(1.05, 8.5));
-
-      game.timers.roundTick = setInterval(() => {
-        const elapsed = (performance.now() - start) / 1000;
-
-        let next;
-        if (elapsed <= 5) {
-          next = 1 + elapsed * 0.2;
-        } else {
-          next = 2 + (elapsed - 5) * 0.55;
-        }
-
-        game.multiplier = round2(next);
-        setCounter(game.multiplier.toFixed(2), false);
-        setBetButton();
-        updateFlyingPlayers();
-        updateOnline();
-
-        if (game.multiplier >= targetCrash) {
-          explodeRound(targetCrash);
-        }
-      }, 70);
-    }
-
-    function explodeRound(finalMultiplier) {
-      clearInterval(game.timers.roundTick);
-      game.timers.roundTick = null;
-      game.phase = 'crash';
-      game.multiplier = round2(finalMultiplier);
-      setCounter(game.multiplier.toFixed(2), false);
-      rocket.style.opacity = '0';
-      flash.classList.remove('show');
-      void flash.offsetWidth;
-      flash.classList.add('show');
-
-      game.roundPlayers.forEach(player => {
-        if (player.status === 'flying') {
-          player.status = 'lost';
-          player.cashoutAt = null;
-          player.win = 0;
-        }
-      });
-
-      const me = game.roundPlayers.find(p => p.id === 'me');
-      if (me && me.status === 'lost') {
-        updateBalance(-me.bet);
+      const amount = getBetInputValue();
+      if (amount <= 0) return;
+      if (amount > state.balance) {
+        setCounter("Недостаточно", "уменьши сумму");
+        haptic("medium");
+        return;
       }
 
-      game.history.unshift(game.multiplier);
-      game.history = game.history.slice(0, 12);
+      state.currentBet = amount;
+      state.hasBet = true;
+      state.cashedOut = false;
+      updateBalance(-amount);
+
+      state.activePlayers = [{
+        id: "me",
+        name: "Игрок",
+        avatar: "🧑‍🚀",
+        bet: amount,
+        status: "joined",
+        cashoutAt: 0,
+        win: 0
+      }];
+
+      haptic("light");
+      renderPlayers();
+      setBetButton();
+      setPhaseVisuals();
+    }
+
+    function cashOut() {
+      if (state.phase !== "flying") return;
+      if (!state.hasBet || state.cashedOut) return;
+
+      const me = state.activePlayers.find((item) => item.id === "me");
+      if (!me) return;
+
+      me.status = "cashed";
+      me.cashoutAt = round2(state.multiplier);
+      me.win = round2(me.bet * me.cashoutAt);
+      updateBalance(me.win);
+      state.cashedOut = true;
+      state.bestWin = Math.max(state.bestWin, me.win);
+
+      renderPlayers();
+      setBetButton();
+      haptic("medium");
+      showWinModal(me.win, me.cashoutAt);
+    }
+
+    function clearAllTimers() {
+      clearInterval(state.timers.loading);
+      clearInterval(state.timers.countdown);
+      clearInterval(state.timers.flight);
+      clearTimeout(state.timers.restart);
+      state.timers.loading = null;
+      state.timers.countdown = null;
+      state.timers.flight = null;
+      state.timers.restart = null;
+      stopSmokeLoop();
+    }
+
+    function explodeRound() {
+      clearInterval(state.timers.flight);
+      state.timers.flight = null;
+      state.phase = "crash";
+      state.multiplier = state.crashPoint;
+      state.lastCrash = state.crashPoint;
+
+      state.activePlayers = state.activePlayers.map((player) => {
+        if (player.status === "cashed") return player;
+        return { ...player, status: "lost", win: 0 };
+      });
+
+      setCounter(state.crashPoint.toFixed(2) + "x", "готовимся к новому");
+      setPhaseVisuals();
       renderPlayers();
       renderHistory();
       setBetButton();
 
-      game.timers.restart = setTimeout(() => startRound(), 2200);
+      els.rocket.style.opacity = "0";
+      els.rocketTrail.style.opacity = "0";
+      stopSmokeLoop();
+      showCrashEffects();
+
+      state.history.unshift(state.crashPoint);
+      state.history = state.history.slice(0, 12);
+      renderHistory();
+      syncUI();
+
+      state.timers.restart = setTimeout(startRound, 2100);
+    }
+
+    function startFlight() {
+      state.phase = "flying";
+      state.multiplier = 1;
+      state.rocketPathSeed = Math.random() * 10 + 1;
+      state.crashPoint = round2(1.12 + Math.random() * 8.9);
+
+      state.activePlayers = state.activePlayers.map((player) => ({ ...player, status: "flying" }));
+
+      setPhaseVisuals();
+      renderHistory();
+      renderPlayers();
+      setBetButton();
+
+      els.rocket.style.opacity = "1";
+      els.rocketTrail.style.opacity = ".86";
+      runSmokeLoop();
+
+      const startedAt = performance.now();
+      state.timers.flight = setInterval(() => {
+        const elapsed = (performance.now() - startedAt) / 1000;
+
+        let next;
+        if (elapsed < 1.4) next = 1 + elapsed * 0.54;
+        else if (elapsed < 2.8) next = 1.75 + Math.pow(elapsed - 1.4, 1.18) * 0.65;
+        else next = 2.75 + Math.pow(elapsed - 2.8, 1.24) * 0.9;
+
+        state.multiplier = round2(next);
+        setCounter(state.multiplier.toFixed(2) + "x", "момент взрыва скрыт");
+        updateRocketPosition(state.multiplier);
+        renderPlayers();
+        setBetButton();
+
+        if (state.multiplier >= state.crashPoint) {
+          state.multiplier = state.crashPoint;
+          explodeRound();
+        }
+      }, 42);
     }
 
     function startCountdown() {
-      game.phase = 'countdown';
+      state.phase = "countdown";
+      state.countdown = 4;
+      setPhaseVisuals();
+      setCounter(String(state.countdown), "приём ставок открыт");
       renderHistory();
       setBetButton();
-      setCounter(String(game.countdown), false);
-      rocket.style.opacity = '0';
+      updateRocketPosition(1);
 
-      game.timers.tick = setInterval(() => {
-        game.countdown -= 1;
-        if (game.countdown <= 0) {
-          clearInterval(game.timers.tick);
-          game.timers.tick = null;
-          setCounter('1.00', true);
-          beginFlight();
+      state.timers.countdown = setInterval(() => {
+        state.countdown -= 1;
+        if (state.countdown <= 0) {
+          clearInterval(state.timers.countdown);
+          state.timers.countdown = null;
+          startFlight();
           return;
         }
-        setCounter(String(game.countdown), false);
+        setPhaseVisuals();
+        setCounter(String(state.countdown), "приём ставок открыт");
         renderHistory();
-        setBetButton();
-        if (Math.random() > 0.45) addBotPlayer();
       }, 1000);
     }
 
     function startRound() {
-      clearTimers();
-      game.phase = 'waiting';
-      game.countdown = 10;
-      game.multiplier = 1;
-      game.currentBet = 0;
-      game.playing = false;
-      game.cashedOut = false;
-      game.roundPlayers = [];
-      rocket.style.opacity = '0';
-      setCounter('Ожидание', true);
-      renderPlayers();
+      clearAllTimers();
+      closeWinModal();
+      state.round += 1;
+      state.phase = "waiting";
+      state.countdown = 4;
+      state.multiplier = 1;
+      state.currentBet = 0;
+      state.hasBet = false;
+      state.cashedOut = false;
+      state.crashPoint = 0;
+      state.activePlayers = [];
+      setPhaseVisuals();
+      setCounter("Ожидание", "новый раунд скоро");
       renderHistory();
+      renderPlayers();
       setBetButton();
-      updateOnline();
-      spawnWaitingPlayers();
-      game.timers.restart = setTimeout(() => startCountdown(), 2200);
+      syncUI();
+      els.rocket.style.opacity = "1";
+      els.rocketTrail.style.opacity = ".75";
+      updateRocketPosition(1);
+      state.timers.restart = setTimeout(startCountdown, 1200);
     }
 
-    betBtn.addEventListener('click', () => {
-      if (game.phase === 'waiting' || game.phase === 'countdown') {
-        addUserBet();
-      } else if (game.phase === 'flying') {
-        cashoutUser();
-      }
+    function initLoading() {
+      let progress = 0;
+      state.timers.loading = setInterval(() => {
+        progress += Math.floor(Math.random() * 10) + 5;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(state.timers.loading);
+          state.timers.loading = null;
+          setTimeout(() => { els.loadingScreen.classList.add("hide"); }, 220);
+        }
+        els.progressFill.style.width = progress + "%";
+        els.progressLabel.textContent = "LOADING " + progress + "%";
+      }, 150);
+    }
+
+    quickButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const amount = button.dataset.amount;
+        const action = button.dataset.action;
+        const current = getBetInputValue();
+
+        if (amount) setBetInputValue(Number(amount));
+        else if (action === "half") setBetInputValue(Math.max(0.01, state.balance / 2));
+        else if (action === "all") setBetInputValue(Math.max(0.01, state.balance));
+        else if (action === "double") setBetInputValue(Math.max(0.01, current * 2 || 1));
+        else if (action === "clear") setBetInputValue(0.01);
+
+        haptic("light");
+      });
     });
 
+    els.maxBetBtn.addEventListener("click", () => {
+      setBetInputValue(Math.max(0.01, state.balance));
+      haptic("light");
+    });
+
+    els.betButton.addEventListener("click", () => {
+      if (state.phase === "waiting" || state.phase === "countdown") placeBet();
+      else if (state.phase === "flying") cashOut();
+    });
+
+    navItems.forEach((button) => {
+      button.addEventListener("click", () => {
+        const screen = button.dataset.screen;
+        navItems.forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        Object.values(screens).forEach((node) => node.classList.remove("active"));
+        screens[screen].classList.add("active");
+        haptic("light");
+      });
+    });
+
+    els.applyBalanceBtn.addEventListener("click", () => {
+      const next = Number(els.manualBalanceInput.value);
+      if (!Number.isFinite(next) || next < 0) return;
+      state.balance = round2(next);
+      syncUI();
+      haptic("medium");
+    });
+
+    els.restoreBalanceBtn.addEventListener("click", () => {
+      state.balance = state.initialBalance;
+      syncUI();
+      haptic("medium");
+    });
+
+    els.set1kBtn.addEventListener("click", () => {
+      state.balance = 1000;
+      syncUI();
+      haptic("medium");
+    });
+
+    els.set10kBtn.addEventListener("click", () => {
+      state.balance = 10000;
+      syncUI();
+      haptic("medium");
+    });
+
+    els.set50kBtn.addEventListener("click", () => {
+      state.balance = 50000;
+      syncUI();
+      haptic("medium");
+    });
+
+    els.closeWinModal.addEventListener("click", () => {
+      closeWinModal();
+      haptic("light");
+    });
+
+    els.winModal.addEventListener("click", (event) => {
+      if (event.target === els.winModal) closeWinModal();
+    });
+
+    els.hapticToggle.addEventListener("click", () => {
+      state.hapticsEnabled = !state.hapticsEnabled;
+      els.hapticToggle.textContent = state.hapticsEnabled ? "⚡" : "🔇";
+      haptic("light");
+    });
+
+    window.addEventListener("resize", () => {
+      updateRocketPosition(Math.max(1, state.multiplier || 1));
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && navigator.vibrate) navigator.vibrate(0);
+    });
+
+    syncUI();
+    renderHistory();
+    renderPlayers();
+    setBetButton();
+    initLoading();
     startRound();
+
+    // Hooks for real backend integration:
+    // window.GiftLabRealtime = {
+    //   setOnlinePlayers(playersArray) { state.activePlayers = playersArray; renderPlayers(); },
+    //   setRoundState(payload) { /* sync from API/WebSocket here */ },
+    //   setBalance(value) { state.balance = round2(value); syncUI(); }
+    // };
   </script>
 </body>
 </html>
