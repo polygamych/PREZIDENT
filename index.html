@@ -1710,8 +1710,8 @@
     }
 
     function setCounter(main, sub) {
-      els.counterMain.textContent = main;
-      els.counterSub.textContent = sub;
+      if (els.counterMain) els.counterMain.textContent = main;
+      if (els.counterSub) els.counterSub.textContent = sub;
     }
 
     function setPhaseVisuals() {
@@ -1722,8 +1722,8 @@
         crash: { phase: "Взрыв", chip: "Раунд завершён", sub: "готовимся к новому" }
       };
       const current = map[state.phase];
-      els.phaseValue.textContent = current.phase;
-      els.stateChip.textContent = current.chip;
+      if (els.phaseValue) els.phaseValue.textContent = current.phase;
+      if (els.stateChip) els.stateChip.textContent = current.chip;
       if (state.phase === "waiting") setCounter("Ожидание", current.sub);
       if (state.phase === "crash") setCounter(state.crashPoint.toFixed(2) + "x", current.sub);
     }
@@ -1734,21 +1734,22 @@
       const bestWin = formatMoney(state.bestWin);
       const rounds = String(state.round);
 
-      els.topBalance.textContent = balance;
-      els.profileTopBalance.textContent = balance;
-      els.profileBalance.textContent = balance;
-      els.profileOnline.textContent = String(online);
-      els.profileRounds.textContent = rounds;
-      els.profileBestWin.textContent = bestWin;
-      els.baseBalanceValue.textContent = formatMoney(state.initialBalance);
-      els.onlineChip.innerHTML = "👤 <strong>" + online + "</strong>";
-      els.playersTag.textContent = online + " " + pluralize(online, ["игрок", "игрока", "игроков"]);
-      els.miniRounds.textContent = rounds;
-      els.miniBestWin.textContent = bestWin;
-      els.miniLastCrash.textContent = state.lastCrash ? state.lastCrash.toFixed(2) + "x" : "—";
+      if (els.topBalance) els.topBalance.textContent = balance;
+      if (els.profileTopBalance) els.profileTopBalance.textContent = balance;
+      if (els.profileBalance) els.profileBalance.textContent = balance;
+      if (els.profileOnline) els.profileOnline.textContent = String(online);
+      if (els.profileRounds) els.profileRounds.textContent = rounds;
+      if (els.profileBestWin) els.profileBestWin.textContent = bestWin;
+      if (els.baseBalanceValue) els.baseBalanceValue.textContent = formatMoney(state.initialBalance);
+      if (els.onlineChip) els.onlineChip.innerHTML = "👤 <strong>" + online + "</strong>";
+      if (els.playersTag) els.playersTag.textContent = online + " " + pluralize(online, ["игрок", "игрока", "игроков"]);
+      if (els.miniRounds) els.miniRounds.textContent = rounds;
+      if (els.miniBestWin) els.miniBestWin.textContent = bestWin;
+      if (els.miniLastCrash) els.miniLastCrash.textContent = state.lastCrash ? state.lastCrash.toFixed(2) + "x" : "—";
     }
 
     function renderHistory() {
+      if (!els.historyRow) return;
       const phaseText = state.phase === "waiting" ? "Ждём ставки" : state.phase === "countdown" ? "Старт " + state.countdown : state.phase === "flying" ? "Полет" : "Взрыв";
       const pills = ['<div class="history-pill live">' + phaseText + '</div>'];
       state.history.slice(0, 6).forEach((value) => {
@@ -1761,15 +1762,14 @@
     }
 
     function renderPlayers() {
+      if (!els.playersList) return;
       const players = state.activePlayers;
       if (!players.length) {
         els.playersList.innerHTML = `
           <div class="empty-state">
             <div>
               <div class="title">Пока никто не в игре</div>
-              <div class="text">
-                Здесь не показывается фейковая активность. Список появится только когда есть реальная ставка.
-              </div>
+              <div class="text">Здесь не показывается фейковая активность. Список появится только когда есть реальная ставка.</div>
             </div>
           </div>
         `;
@@ -1781,7 +1781,6 @@
         const valueClass = player.status === "cashed" ? "up" : player.status === "lost" ? "down" : "live";
         const valueText = player.status === "cashed" ? formatMoney(player.win) : player.status === "lost" ? formatMoney(0) : formatMoney(player.bet);
         const statusText = player.status === "cashed" ? "вывод x" + player.cashoutAt.toFixed(2) : player.status === "lost" ? "не успел вывести" : state.phase === "flying" ? "в игре x" + state.multiplier.toFixed(2) : "ставка принята";
-
         return `
           <div class="player-card" style="animation-delay:${index * 40}ms;">
             <div class="avatar">${player.avatar}</div>
@@ -1796,11 +1795,11 @@
           </div>
         `;
       }).join("");
-
       syncUI();
     }
 
     function setBetButton() {
+      if (!els.betButton) return;
       if (state.phase === "waiting" || state.phase === "countdown") {
         els.betButton.disabled = false;
         els.betButton.classList.remove("secondary");
@@ -1823,17 +1822,19 @@
     }
 
     function getBetInputValue() {
-      const value = Number(els.betInput.value);
+      const value = Number(els.betInput ? els.betInput.value : 0);
       if (!Number.isFinite(value)) return 0;
       return round2(Math.max(0, value));
     }
 
     function setBetInputValue(value) {
+      if (!els.betInput) return;
       const safe = round2(Math.max(0.01, value));
       els.betInput.value = safe.toFixed(2);
     }
 
     function createConfetti() {
+      if (!els.confetti) return;
       const colors = ["#ffd86d", "#62c6ff", "#ff5ed8", "#73ffad", "#ffffff", "#bc8cff"];
       let html = "";
       for (let i = 0; i < 24; i++) {
@@ -1848,18 +1849,20 @@
     }
 
     function showWinModal(sum, multiplier) {
+      if (!els.winModal) return;
       createConfetti();
-      els.winAmount.textContent = "+" + formatMoney(sum);
-      els.winDescription.textContent = "Красивый вывод на x" + multiplier.toFixed(2) + " завершён успешно.";
+      if (els.winAmount) els.winAmount.textContent = "+" + formatMoney(sum);
+      if (els.winDescription) els.winDescription.textContent = "Красивый вывод на x" + multiplier.toFixed(2) + " завершён успешно.";
       els.winModal.classList.add("show");
     }
 
     function closeWinModal() {
-      els.winModal.classList.remove("show");
-      els.confetti.innerHTML = "";
+      if (els.winModal) els.winModal.classList.remove("show");
+      if (els.confetti) els.confetti.innerHTML = "";
     }
 
     function updateRocketPosition(multiplier) {
+      if (!els.scene || !els.rocket || !els.rocketTrail) return;
       const rect = els.scene.getBoundingClientRect();
       const w = rect.width || 320;
       const h = rect.height || 260;
@@ -1870,18 +1873,15 @@
       const px = xRatio * w;
       const py = yRatio * h;
       const angle = -18 + Math.sin(seed + progress * 7.2) * 18 + progress * 22;
-
       els.rocket.style.left = px + "px";
       els.rocket.style.top = py + "px";
       els.rocket.style.transform = "translate(-50%, -50%) rotate(" + angle + "deg)";
-
       const tailLength = 150 + progress * 90;
       els.rocketTrail.style.width = tailLength + "px";
       els.rocketTrail.style.left = (px - tailLength * 0.72) + "px";
       els.rocketTrail.style.top = (py + 6) + "px";
       els.rocketTrail.style.transform = "rotate(" + (angle + 178) + "deg)";
       els.rocketTrail.style.opacity = String(0.56 + progress * 0.38);
-
       spawnSmoke(px, py, angle);
     }
 
@@ -1900,10 +1900,10 @@
     }
 
     function renderSmoke() {
+      if (!els.rocketSmoke) return;
       state.smokeParticles = state.smokeParticles
         .map((p) => ({ ...p, x: p.x + p.vx, y: p.y + p.vy, vy: p.vy + 0.02, life: p.life - 0.045, scale: p.scale + 0.05 }))
         .filter((p) => p.life > 0);
-
       els.rocketSmoke.innerHTML = state.smokeParticles.map((p) => {
         const opacity = Math.max(0, p.life);
         return '<div class="smoke-puff" style="left:' + p.x + 'px; top:' + p.y + 'px; opacity:' + opacity + '; transform:translate(-50%,-50%) scale(' + p.scale + ');"></div>';
@@ -1919,24 +1919,27 @@
       clearInterval(state.timers.smoke);
       state.timers.smoke = null;
       state.smokeParticles = [];
-      els.rocketSmoke.innerHTML = "";
+      if (els.rocketSmoke) els.rocketSmoke.innerHTML = "";
     }
 
     function showCrashEffects() {
-      els.crashBurst.classList.remove("show");
-      void els.crashBurst.offsetWidth;
-      els.crashBurst.classList.add("show");
-
-      els.flashLayer.classList.add("show");
-      els.shockwaveLayer.classList.remove("show");
-      void els.shockwaveLayer.offsetWidth;
-      els.shockwaveLayer.classList.add("show");
-
-      els.appShell.classList.remove("screen-shake");
-      void els.appShell.offsetWidth;
-      els.appShell.classList.add("screen-shake");
-
-      setTimeout(() => { els.flashLayer.classList.remove("show"); }, 130);
+      if (els.crashBurst) {
+        els.crashBurst.classList.remove("show");
+        void els.crashBurst.offsetWidth;
+        els.crashBurst.classList.add("show");
+      }
+      if (els.flashLayer) els.flashLayer.classList.add("show");
+      if (els.shockwaveLayer) {
+        els.shockwaveLayer.classList.remove("show");
+        void els.shockwaveLayer.offsetWidth;
+        els.shockwaveLayer.classList.add("show");
+      }
+      if (els.appShell) {
+        els.appShell.classList.remove("screen-shake");
+        void els.appShell.offsetWidth;
+        els.appShell.classList.add("screen-shake");
+      }
+      setTimeout(() => { if (els.flashLayer) els.flashLayer.classList.remove("show"); }, 130);
       haptic("strong");
     }
 
@@ -1949,7 +1952,6 @@
     function placeBet() {
       if (!(state.phase === "waiting" || state.phase === "countdown")) return;
       if (state.hasBet) return;
-
       const amount = getBetInputValue();
       if (amount <= 0) return;
       if (amount > state.balance) {
@@ -1957,22 +1959,11 @@
         haptic("medium");
         return;
       }
-
       state.currentBet = amount;
       state.hasBet = true;
       state.cashedOut = false;
       updateBalance(-amount);
-
-      state.activePlayers = [{
-        id: "me",
-        name: "Игрок",
-        avatar: "🧑‍🚀",
-        bet: amount,
-        status: "joined",
-        cashoutAt: 0,
-        win: 0
-      }];
-
+      state.activePlayers = [{ id: "me", name: "Игрок", avatar: "🧑‍🚀", bet: amount, status: "joined", cashoutAt: 0, win: 0 }];
       haptic("light");
       renderPlayers();
       setBetButton();
@@ -1982,17 +1973,14 @@
     function cashOut() {
       if (state.phase !== "flying") return;
       if (!state.hasBet || state.cashedOut) return;
-
       const me = state.activePlayers.find((item) => item.id === "me");
       if (!me) return;
-
       me.status = "cashed";
       me.cashoutAt = round2(state.multiplier);
       me.win = round2(me.bet * me.cashoutAt);
       updateBalance(me.win);
       state.cashedOut = true;
       state.bestWin = Math.max(state.bestWin, me.win);
-
       renderPlayers();
       setBetButton();
       haptic("medium");
@@ -2000,16 +1988,16 @@
     }
 
     function clearAllTimers() {
-      clearInterval(state.timers.loading);
-      clearInterval(state.timers.countdown);
-      clearInterval(state.timers.flight);
-      clearTimeout(state.timers.restart);
-      state.timers.loading = null;
-      state.timers.countdown = null;
-      state.timers.flight = null;
-      state.timers.restart = null;
-      stopSmokeLoop();
-    }
+  clearInterval(state.timers.countdown);
+  clearInterval(state.timers.flight);
+  clearTimeout(state.timers.restart);
+
+  state.timers.countdown = null;
+  state.timers.flight = null;
+  state.timers.restart = null;
+
+  stopSmokeLoop();
+}
 
     function explodeRound() {
       clearInterval(state.timers.flight);
@@ -2017,28 +2005,20 @@
       state.phase = "crash";
       state.multiplier = state.crashPoint;
       state.lastCrash = state.crashPoint;
-
-      state.activePlayers = state.activePlayers.map((player) => {
-        if (player.status === "cashed") return player;
-        return { ...player, status: "lost", win: 0 };
-      });
-
+      state.activePlayers = state.activePlayers.map((player) => player.status === "cashed" ? player : ({ ...player, status: "lost", win: 0 }));
       setCounter(state.crashPoint.toFixed(2) + "x", "готовимся к новому");
       setPhaseVisuals();
       renderPlayers();
       renderHistory();
       setBetButton();
-
-      els.rocket.style.opacity = "0";
-      els.rocketTrail.style.opacity = "0";
+      if (els.rocket) els.rocket.style.opacity = "0";
+      if (els.rocketTrail) els.rocketTrail.style.opacity = "0";
       stopSmokeLoop();
       showCrashEffects();
-
       state.history.unshift(state.crashPoint);
       state.history = state.history.slice(0, 12);
       renderHistory();
       syncUI();
-
       state.timers.restart = setTimeout(startRound, 2100);
     }
 
@@ -2047,33 +2027,26 @@
       state.multiplier = 1;
       state.rocketPathSeed = Math.random() * 10 + 1;
       state.crashPoint = round2(1.12 + Math.random() * 8.9);
-
       state.activePlayers = state.activePlayers.map((player) => ({ ...player, status: "flying" }));
-
       setPhaseVisuals();
       renderHistory();
       renderPlayers();
       setBetButton();
-
-      els.rocket.style.opacity = "1";
-      els.rocketTrail.style.opacity = ".86";
+      if (els.rocket) els.rocket.style.opacity = "1";
+      if (els.rocketTrail) els.rocketTrail.style.opacity = ".86";
       runSmokeLoop();
-
       const startedAt = performance.now();
       state.timers.flight = setInterval(() => {
         const elapsed = (performance.now() - startedAt) / 1000;
-
         let next;
         if (elapsed < 1.4) next = 1 + elapsed * 0.54;
         else if (elapsed < 2.8) next = 1.75 + Math.pow(elapsed - 1.4, 1.18) * 0.65;
         else next = 2.75 + Math.pow(elapsed - 2.8, 1.24) * 0.9;
-
         state.multiplier = round2(next);
         setCounter(state.multiplier.toFixed(2) + "x", "момент взрыва скрыт");
         updateRocketPosition(state.multiplier);
         renderPlayers();
         setBetButton();
-
         if (state.multiplier >= state.crashPoint) {
           state.multiplier = state.crashPoint;
           explodeRound();
@@ -2089,7 +2062,6 @@
       renderHistory();
       setBetButton();
       updateRocketPosition(1);
-
       state.timers.countdown = setInterval(() => {
         state.countdown -= 1;
         if (state.countdown <= 0) {
@@ -2122,24 +2094,25 @@
       renderPlayers();
       setBetButton();
       syncUI();
-      els.rocket.style.opacity = "1";
-      els.rocketTrail.style.opacity = ".75";
+      if (els.rocket) els.rocket.style.opacity = "1";
+      if (els.rocketTrail) els.rocketTrail.style.opacity = ".75";
       updateRocketPosition(1);
       state.timers.restart = setTimeout(startCountdown, 1200);
     }
 
     function initLoading() {
       let progress = 0;
+      clearInterval(state.timers.loading);
       state.timers.loading = setInterval(() => {
         progress += Math.floor(Math.random() * 10) + 5;
         if (progress >= 100) {
           progress = 100;
           clearInterval(state.timers.loading);
           state.timers.loading = null;
-          setTimeout(() => { els.loadingScreen.classList.add("hide"); }, 220);
+          setTimeout(() => { if (els.loadingScreen) els.loadingScreen.classList.add("hide"); }, 220);
         }
-        els.progressFill.style.width = progress + "%";
-        els.progressLabel.textContent = "LOADING " + progress + "%";
+        if (els.progressFill) els.progressFill.style.width = progress + "%";
+        if (els.progressLabel) els.progressLabel.textContent = "LOADING " + progress + "%";
       }, 150);
     }
 
@@ -2148,26 +2121,28 @@
         const amount = button.dataset.amount;
         const action = button.dataset.action;
         const current = getBetInputValue();
-
         if (amount) setBetInputValue(Number(amount));
         else if (action === "half") setBetInputValue(Math.max(0.01, state.balance / 2));
         else if (action === "all") setBetInputValue(Math.max(0.01, state.balance));
         else if (action === "double") setBetInputValue(Math.max(0.01, current * 2 || 1));
         else if (action === "clear") setBetInputValue(0.01);
-
         haptic("light");
       });
     });
 
-    els.maxBetBtn.addEventListener("click", () => {
-      setBetInputValue(Math.max(0.01, state.balance));
-      haptic("light");
-    });
+    if (els.maxBetBtn) {
+      els.maxBetBtn.addEventListener("click", () => {
+        setBetInputValue(Math.max(0.01, state.balance));
+        haptic("light");
+      });
+    }
 
-    els.betButton.addEventListener("click", () => {
-      if (state.phase === "waiting" || state.phase === "countdown") placeBet();
-      else if (state.phase === "flying") cashOut();
-    });
+    if (els.betButton) {
+      els.betButton.addEventListener("click", () => {
+        if (state.phase === "waiting" || state.phase === "countdown") placeBet();
+        else if (state.phase === "flying") cashOut();
+      });
+    }
 
     navItems.forEach((button) => {
       button.addEventListener("click", () => {
@@ -2175,79 +2150,50 @@
         navItems.forEach((item) => item.classList.remove("active"));
         button.classList.add("active");
         Object.values(screens).forEach((node) => node.classList.remove("active"));
-        screens[screen].classList.add("active");
+        if (screens[screen]) screens[screen].classList.add("active");
         haptic("light");
       });
     });
 
-    els.applyBalanceBtn.addEventListener("click", () => {
-      const next = Number(els.manualBalanceInput.value);
-      if (!Number.isFinite(next) || next < 0) return;
-      state.balance = round2(next);
-      syncUI();
-      haptic("medium");
-    });
+    if (els.applyBalanceBtn) {
+      els.applyBalanceBtn.addEventListener("click", () => {
+        const next = Number(els.manualBalanceInput ? els.manualBalanceInput.value : 0);
+        if (!Number.isFinite(next) || next < 0) return;
+        state.balance = round2(next);
+        syncUI();
+        haptic("medium");
+      });
+    }
 
-    els.restoreBalanceBtn.addEventListener("click", () => {
-      state.balance = state.initialBalance;
-      syncUI();
-      haptic("medium");
-    });
+    if (els.restoreBalanceBtn) {
+      els.restoreBalanceBtn.addEventListener("click", () => {
+        state.balance = state.initialBalance;
+        syncUI();
+        haptic("medium");
+      });
+    }
 
-    els.set1kBtn.addEventListener("click", () => {
-      state.balance = 1000;
-      syncUI();
-      haptic("medium");
-    });
+    if (els.set1kBtn) els.set1kBtn.addEventListener("click", () => { state.balance = 1000; syncUI(); haptic("medium"); });
+    if (els.set10kBtn) els.set10kBtn.addEventListener("click", () => { state.balance = 10000; syncUI(); haptic("medium"); });
+    if (els.set50kBtn) els.set50kBtn.addEventListener("click", () => { state.balance = 50000; syncUI(); haptic("medium"); });
+    if (els.closeWinModal) els.closeWinModal.addEventListener("click", () => { closeWinModal(); haptic("light"); });
+    if (els.winModal) els.winModal.addEventListener("click", (event) => { if (event.target === els.winModal) closeWinModal(); });
+    if (els.hapticToggle) els.hapticToggle.addEventListener("click", () => { state.hapticsEnabled = !state.hapticsEnabled; els.hapticToggle.textContent = state.hapticsEnabled ? "⚡" : "🔇"; haptic("light"); });
 
-    els.set10kBtn.addEventListener("click", () => {
-      state.balance = 10000;
-      syncUI();
-      haptic("medium");
-    });
+    window.addEventListener("resize", () => { updateRocketPosition(Math.max(1, state.multiplier || 1)); });
+    document.addEventListener("visibilitychange", () => { if (document.hidden && navigator.vibrate) navigator.vibrate(0); });
 
-    els.set50kBtn.addEventListener("click", () => {
-      state.balance = 50000;
-      syncUI();
-      haptic("medium");
-    });
+    window.addEventListener("load", () => {
+  syncUI();
+  renderHistory();
+  renderPlayers();
+  setBetButton();
+  initLoading();
 
-    els.closeWinModal.addEventListener("click", () => {
-      closeWinModal();
-      haptic("light");
-    });
-
-    els.winModal.addEventListener("click", (event) => {
-      if (event.target === els.winModal) closeWinModal();
-    });
-
-    els.hapticToggle.addEventListener("click", () => {
-      state.hapticsEnabled = !state.hapticsEnabled;
-      els.hapticToggle.textContent = state.hapticsEnabled ? "⚡" : "🔇";
-      haptic("light");
-    });
-
-    window.addEventListener("resize", () => {
-      updateRocketPosition(Math.max(1, state.multiplier || 1));
-    });
-
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden && navigator.vibrate) navigator.vibrate(0);
-    });
-
-    syncUI();
-    renderHistory();
-    renderPlayers();
-    setBetButton();
-    initLoading();
+  setTimeout(() => {
     startRound();
-
-    // Hooks for real backend integration:
-    // window.GiftLabRealtime = {
-    //   setOnlinePlayers(playersArray) { state.activePlayers = playersArray; renderPlayers(); },
-    //   setRoundState(payload) { /* sync from API/WebSocket here */ },
-    //   setBalance(value) { state.balance = round2(value); syncUI(); }
-    // };
+  }, 1700);
+});
   </script>
 </body>
 </html>
