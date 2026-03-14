@@ -68,6 +68,7 @@
       gap:12px;
     }
 
+
     .topbar{
       display:flex;align-items:center;justify-content:space-between;gap:10px;flex:0 0 auto;
     }
@@ -95,8 +96,41 @@
     .balance-val{font-size:16px;font-weight:800;letter-spacing:.02em}
     .add-btn{font-size:26px;line-height:1;color:rgba(255,255,255,.9)}
 
-    .screen{display:none;flex:1;min-height:0;position:relative}
-    .screen.active{display:flex;flex-direction:column;gap:12px}
+    /* ── Tab screen animations ── */
+    .screens-container{position:relative;flex:1;min-height:0;overflow:hidden}
+    .screen{
+      display:flex;flex-direction:column;gap:12px;
+      flex:1;min-height:0;
+      position:absolute;inset:0;
+      pointer-events:none;
+      opacity:0;
+      transform:translateX(60px) scale(.97);
+      transition:opacity .36s cubic-bezier(.4,0,.2,1), transform .36s cubic-bezier(.4,0,.2,1);
+      will-change:transform,opacity;
+      overflow:hidden auto;
+    }
+    .screen.active{
+      pointer-events:auto;
+      opacity:1;
+      transform:translateX(0) scale(1);
+    }
+    .screen.exit-left{
+      opacity:0 !important;
+      transform:translateX(-60px) scale(.97) !important;
+      transition:opacity .26s cubic-bezier(.4,0,.2,1), transform .26s cubic-bezier(.4,0,.2,1) !important;
+    }
+    .screen.exit-right{
+      opacity:0 !important;
+      transform:translateX(60px) scale(.97) !important;
+      transition:opacity .26s cubic-bezier(.4,0,.2,1), transform .26s cubic-bezier(.4,0,.2,1) !important;
+    }
+    .screen.enter-from-right{transform:translateX(60px) scale(.97);opacity:0}
+    .screen.enter-from-left{transform:translateX(-60px) scale(.97);opacity:0}
+
+    /* Nav tab tap animation */
+    .nav-btn{transition:color .22s ease, background .22s ease, transform .14s cubic-bezier(.4,1.6,.6,1)}
+    .nav-btn:active{transform:scale(.88)}
+    .nav-btn.active{transform:scale(1)}
 
     .scene{
       position:relative;flex:1;min-height:290px;overflow:hidden;border-radius:30px;
@@ -137,7 +171,7 @@
       padding-top:26px;padding-bottom:70px;pointer-events:none;
     }
     .multiplier{
-      font-size:clamp(68px, 22vw, 126px);line-height:.88;font-weight:900;letter-spacing:-.05em;
+      font-size:clamp(38px, 13vw, 72px);line-height:.88;font-weight:900;letter-spacing:-.05em;
       color:#f5fff6;
       text-shadow:0 0 36px rgba(152,255,93,.08);
       transition:transform .18s ease, color .18s ease, text-shadow .18s ease, filter .18s ease;
@@ -228,7 +262,7 @@
     .main-btn.disabled,.main-btn:disabled{color:rgba(8,12,9,.5);background:linear-gradient(180deg, rgba(152,255,93,.35), rgba(152,255,93,.2));box-shadow:none}
     .hint{font-size:12px;color:var(--muted);text-align:center}
 
-    .players-card{flex:0 0 220px;padding:14px;display:flex;flex-direction:column;gap:12px;min-height:220px}
+    .players-card{flex:0 0 auto;max-height:160px;padding:14px;display:flex;flex-direction:column;gap:12px;}
     .players-title{display:flex;align-items:center;justify-content:space-between;font-weight:800;color:var(--text)}
     .players-list{display:flex;flex-direction:column;gap:10px;flex:1;overflow:auto;padding-right:2px}
     .players-list::-webkit-scrollbar{display:none}
@@ -296,7 +330,23 @@
       box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 0 0 1px rgba(152,255,93,.08);
     }
 
-    .toast{
+    /* App entrance animation */
+    .shell{
+      animation:appEnter .55s cubic-bezier(.4,0,.2,1) both;
+    }
+    @keyframes appEnter{
+      from{opacity:0;transform:translateY(18px) scale(.98)}
+      to{opacity:1;transform:none}
+    }
+    .bottom-nav{
+      animation:navEnter .6s .08s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes navEnter{
+      from{opacity:0;transform:translateY(28px)}
+      to{opacity:1;transform:none}
+    }
+
+    /* toast */
       position:absolute;left:50%;bottom:calc(120px + var(--safe-bottom));transform:translate(-50%, 18px);
       z-index:12;min-width:250px;max-width:calc(100% - 28px);padding:14px 16px;border-radius:18px;
       background:rgba(14,22,18,.96);border:1px solid rgba(152,255,93,.16);box-shadow:var(--shadow);
@@ -362,6 +412,161 @@
       .nav-btn{height:76px}
       .profile-avatar{width:112px;height:112px}
     }
+
+/* AUTO CASHOUT ROW */
+.auto-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-radius:18px;
+  background:rgba(152,255,93,.06);border:1px solid rgba(152,255,93,.14);
+  gap:12px;transition:all .2s ease;
+}
+.auto-toggle-wrap{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0}
+.auto-toggle-track{
+  width:44px;height:26px;border-radius:13px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.1);position:relative;transition:background .22s ease;cursor:pointer;
+}
+.auto-toggle-track.on{background:linear-gradient(90deg, #5cd65c, var(--acid));border-color:rgba(152,255,93,.4);box-shadow:0 0 14px rgba(152,255,93,.22)}
+.auto-toggle-thumb{
+  position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;
+  background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.28);transition:left .22s cubic-bezier(.4,1.6,.6,1);
+}
+.auto-toggle-track.on .auto-toggle-thumb{left:21px}
+.auto-label{font-size:14px;font-weight:800;color:var(--muted);transition:color .2s}
+.auto-toggle-track.on ~ .auto-label,.auto-toggle-wrap:has(.auto-toggle-track.on) .auto-label{color:var(--acid-3)}
+
+.auto-input-wrap{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:6px 12px;
+  opacity:.38;pointer-events:none;transition:opacity .22s ease, border-color .22s ease;
+}
+.auto-input-wrap.enabled{opacity:1;pointer-events:auto;border-color:rgba(152,255,93,.3);background:rgba(152,255,93,.06)}
+.auto-at{font-size:13px;color:var(--muted);font-weight:700}
+.auto-input{
+  width:54px;background:transparent;border:0;outline:0;color:var(--acid-3);
+  font-size:18px;font-weight:900;text-align:center;
+}
+.auto-input::-webkit-outer-spin-button,.auto-input::-webkit-inner-spin-button{-webkit-appearance:none}
+.auto-x{font-size:16px;font-weight:900;color:var(--acid)}
+
+/* MAIN BUTTON — компактнее */
+.main-btn{
+  position:relative;height:52px;border:0;border-radius:18px;color:#071009;font-size:19px;font-weight:900;
+  background:linear-gradient(180deg, var(--acid-2), var(--acid));
+  box-shadow:0 12px 22px rgba(152,255,93,.22), inset 0 1px 0 rgba(255,255,255,.45);
+  overflow:hidden;transition:transform .12s ease, box-shadow .12s ease;
+}
+.main-btn:active{transform:scale(.97);box-shadow:0 6px 14px rgba(152,255,93,.14)}
+.main-btn::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(120deg, transparent 0%, rgba(255,255,255,.18) 45%, transparent 70%);
+  transform:translateX(-120%);animation:shine 3.6s linear infinite;
+}
+.main-btn.cashout{
+  background:linear-gradient(180deg, #2dff6e, #18d455);
+  color:#021808;
+  box-shadow:0 12px 28px rgba(29,255,100,.28), inset 0 1px 0 rgba(255,255,255,.5);
+  animation:cashoutPulse 0.9s ease-in-out infinite;
+}
+@keyframes cashoutPulse{
+  0%,100%{box-shadow:0 12px 28px rgba(29,255,100,.28), inset 0 1px 0 rgba(255,255,255,.5)}
+  50%{box-shadow:0 16px 38px rgba(29,255,100,.5), inset 0 1px 0 rgba(255,255,255,.5)}
+}
+.main-btn.cashout::after{
+  content:"";position:absolute;inset:-2px;border-radius:20px;
+  background:linear-gradient(135deg,rgba(46,255,120,.4),transparent 50%,rgba(46,255,120,.2));
+  pointer-events:none;animation:cashRing 1s ease-in-out infinite;
+}
+@keyframes cashRing{0%,100%{opacity:.6}50%{opacity:1}}
+.main-btn.disabled,.main-btn:disabled{
+  color:rgba(8,12,9,.5);
+  background:linear-gradient(180deg, rgba(152,255,93,.3), rgba(152,255,93,.18));
+  box-shadow:none;animation:none;
+}
+.main-btn.disabled::after,.main-btn:disabled::after{display:none}
+
+/* АНИМИРОВАННЫЕ ПЛАНЕТЫ */
+.planet.p1{animation:orbit1 18s linear infinite}
+.planet.p2{animation:orbit2 26s linear infinite}
+.planet.p3{animation:orbit3 22s linear infinite}
+@keyframes orbit1{
+  0%{transform:translate(0,0) rotate(0deg)}
+  25%{transform:translate(6px,-8px) rotate(90deg)}
+  50%{transform:translate(0,-14px) rotate(180deg)}
+  75%{transform:translate(-6px,-8px) rotate(270deg)}
+  100%{transform:translate(0,0) rotate(360deg)}
+}
+@keyframes orbit2{
+  0%{transform:translate(0,0)}
+  33%{transform:translate(-10px,8px)}
+  66%{transform:translate(8px,12px)}
+  100%{transform:translate(0,0)}
+}
+@keyframes orbit3{
+  0%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(-8px,-10px) scale(1.08)}
+  100%{transform:translate(0,0) scale(1)}
+}
+
+/* BET MODAL */
+.bet-modal-overlay{
+  position:absolute;inset:0;z-index:15;background:rgba(0,0,0,.52);
+  backdrop-filter:blur(4px);
+  opacity:0;pointer-events:none;transition:opacity .28s ease;
+  display:flex;align-items:flex-end;justify-content:center;
+}
+.bet-modal-overlay.open{opacity:1;pointer-events:auto}
+.bet-modal{
+  width:100%;max-width:var(--maxw);
+  background:linear-gradient(180deg, rgba(24,32,28,.98), rgba(14,20,18,.99));
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:32px 32px 0 0;
+  padding:16px 20px calc(24px + var(--safe-bottom));
+  display:flex;flex-direction:column;gap:14px;
+  transform:translateY(110%);transition:transform .32s cubic-bezier(.32,1.18,.54,1);
+  box-shadow:0 -20px 60px rgba(0,0,0,.44), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.bet-modal-overlay.open .bet-modal{transform:translateY(0)}
+.bet-modal-handle{
+  width:40px;height:4px;border-radius:2px;background:rgba(255,255,255,.14);
+  margin:0 auto 4px;flex-shrink:0;
+}
+.bet-modal-title{font-size:20px;font-weight:900;text-align:left}
+.bet-modal-curr-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+  border-radius:18px;padding:5px;
+}
+.bet-curr-btn{
+  height:44px;border:0;border-radius:14px;font-size:16px;font-weight:900;
+  background:transparent;color:var(--muted);transition:all .2s ease;
+}
+.bet-curr-btn.active{
+  background:linear-gradient(180deg, var(--acid-2), var(--acid));
+  color:#071009;
+  box-shadow:0 6px 18px rgba(152,255,93,.22), inset 0 1px 0 rgba(255,255,255,.4);
+}
+.bet-modal-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.auto-stepper{
+  width:34px;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.06);color:var(--text);font-size:20px;font-weight:700;
+  display:grid;place-items:center;flex-shrink:0;
+}
+
+/* СОЛНЦЕ — фоновый элемент */
+.sun{
+  position:absolute;width:80px;height:80px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #fffde0, #ffd740 40%, #ff8c00 70%, #c45000 100%);
+  box-shadow:0 0 60px rgba(255,200,40,.22), 0 0 120px rgba(255,160,0,.12);
+  pointer-events:none;z-index:0;
+  top:5%;right:18%;opacity:.28;
+  animation:sunPulse 4s ease-in-out infinite;
+}
+@keyframes sunPulse{
+  0%,100%{box-shadow:0 0 60px rgba(255,200,40,.22), 0 0 120px rgba(255,160,0,.12)}
+  50%{box-shadow:0 0 80px rgba(255,200,40,.38), 0 0 160px rgba(255,160,0,.18)}
+}
+
   </style>
 </head>
 <body>
@@ -383,7 +588,7 @@
         </div>
       </div>
       <div class="loader-title">ACID ROCKET</div>
-      <div class="loader-sub">Погружаем систему в токсичную орбиту. Подготовка сцен, эффектов и игрового цикла.</div>
+      <div class="loader-sub">Погружаем систему в токсичную орбиту. Загрузка сцен, эффектов и игрового цикла.</div>
       <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
     </div>
 
@@ -402,6 +607,7 @@
         </div>
       </div>
 
+      <div class="screens-container">
       <section class="screen active" id="screen-crash">
         <div class="scene" id="scene">
           <div class="grid"></div>
@@ -461,49 +667,112 @@
           <canvas class="fx-layer" id="trail"></canvas>
           <div class="multiplier-wrap">
             <div class="multiplier" id="multiplier">1.00</div>
-            <div class="substate" id="substate">WAITING</div>
+            <div class="substate" id="substate">ОЖИДАНИЕ</div>
           </div>
           <div class="flash" id="flash"></div>
           <div class="history" id="history"></div>
         </div>
 
-        <div class="bet-panel">
-          <div class="bet-row">
-            <div class="input-wrap">
-              <span class="curr">◈</span>
-              <input class="amount-input" id="betInput" type="number" inputmode="decimal" min="0.01" step="0.01" value="10.00" />
-            </div>
-            <button class="mini-btn" id="maxBtn">MAX</button>
-          </div>
-          <div class="quick-grid">
-            <button class="quick-btn" data-amt="1">1</button>
-            <button class="quick-btn" data-amt="5">5</button>
-            <button class="quick-btn" data-amt="10">10</button>
-            <button class="quick-btn" data-amt="25">25</button>
-            <button class="quick-btn action" data-act="half">1/2</button>
-            <button class="quick-btn action" data-act="double">x2</button>
-            <button class="quick-btn action" data-act="all">ALL</button>
-            <button class="quick-btn action" data-act="reset">RESET</button>
-          </div>
-          <button class="main-btn" id="mainBtn">PLACE BET</button>
-          <div class="hint" id="betHint">Demo balance is linked to the profile and updated in real time.</div>
+        <div class="bet-panel" style="padding:10px 0 0">
+  <button class="main-btn" id="mainBtn" style="width:100%">ПОСТАВИТЬ СТАВКУ</button>
+  <div class="hint" id="betHint"></div>
+</div>
+
+<!-- BET MODAL -->
+<div class="bet-modal-overlay" id="betModalOverlay">
+  <div class="bet-modal" id="betModal">
+    <div class="bet-modal-handle"></div>
+    <div class="bet-modal-title">Сделать ставку</div>
+
+    <div class="bet-modal-curr-row">
+      <button class="bet-curr-btn active" data-curr="USDT">USDT</button>
+      <button class="bet-curr-btn" data-curr="TON">TON</button>
+    </div>
+
+    <div class="bet-modal-label-row">
+      <span style="color:var(--muted);font-size:14px">Сумма</span>
+      <span style="color:var(--acid);font-size:13px;font-weight:700">balance: <span id="modalBalance">0.00</span> <span id="modalCurrLabel">USDT</span></span>
+    </div>
+    <div class="input-wrap" style="margin-bottom:4px">
+      <input class="amount-input" id="betInput" type="number" inputmode="decimal" min="0.01" step="0.01" value="10.00" placeholder="0" />
+    </div>
+
+    <div class="auto-row" style="margin-top:6px">
+      <label class="auto-toggle-wrap" style="display:flex;align-items:center;gap:10px;cursor:pointer;flex:1">
+        <div class="auto-toggle-track" id="autoToggleTrack">
+          <div class="auto-toggle-thumb" id="autoToggleThumb"></div>
         </div>
+        <span class="auto-label" style="font-size:14px;font-weight:800">Авто вывод</span>
+      </label>
+      <div class="auto-input-wrap" id="autoInputWrap" style="display:flex;align-items:center;gap:6px">
+        <button class="auto-stepper" id="autoMinus">−</button>
+        <input class="auto-input" id="autoInput" type="number" inputmode="decimal" min="1.01" step="0.1" value="2.00" />
+        <span class="auto-x">x</span>
+        <button class="auto-stepper" id="autoPlus">+</button>
+      </div>
+    </div>
+
+    <button class="main-btn" id="modalConfirmBtn" style="width:100%;margin-top:14px">Сделать ставку</button>
+  </div>
+</div>
 
         <div class="players-card">
           <div class="players-title">
-            <span>Players</span>
-            <span id="roundStateMini" class="neutral">Waiting</span>
+            <span>Игроки</span>
+            <span id="roundStateMini" class="neutral">Ожидание</span>
           </div>
           <div class="players-list" id="playersList"></div>
         </div>
       </section>
 
       <section class="screen" id="screen-cases">
-        <div class="placeholder-card">CASES<br><br><span style="font-size:14px;color:var(--muted)">Screen placeholder. Visual tab is ready for future development.</span></div>
-      </section>
+  <!-- Загрузочный оверлей вкладки -->
+  <div class="tab-loader" id="tabLoader">
+    <div class="tab-loader-rocket">🚀</div>
+    <div class="tab-loader-title">КЕЙСЫ</div>
+    <div class="tab-loader-bar"><div class="tab-loader-fill" id="tabLoaderFill"></div></div>
+  </div>
+
+  <div class="gifts-wrap" id="giftsWrap" style="display:none;flex:1;flex-direction:column;gap:12px;overflow:auto">
+    <div class="gifts-header">
+      <div class="gifts-title">Выбери кейс</div>
+      <div class="gifts-currency-switch">
+        <button class="curr-btn active" id="currUSDT" data-curr="USDT">USDT</button>
+        <button class="curr-btn" id="currTON" data-curr="TON">TON</button>
+      </div>
+    </div>
+    <div class="gifts-grid">
+      <div class="gift-card" data-gift="1">
+        <div class="gift-icon">💎</div>
+        <div class="gift-name">Алмазный набор</div>
+        <div class="gift-price"><span class="gift-curr-label">USDT</span> 5.00</div>
+        <button class="gift-btn">Открыть</button>
+      </div>
+      <div class="gift-card" data-gift="2">
+        <div class="gift-icon">🛸</div>
+        <div class="gift-name">НЛО Бокс</div>
+        <div class="gift-price"><span class="gift-curr-label">USDT</span> 12.00</div>
+        <button class="gift-btn">Открыть</button>
+      </div>
+      <div class="gift-card" data-gift="3">
+        <div class="gift-icon">🌟</div>
+        <div class="gift-name">Звёздный кейс</div>
+        <div class="gift-price"><span class="gift-curr-label">USDT</span> 25.00</div>
+        <button class="gift-btn">Открыть</button>
+      </div>
+      <div class="gift-card featured" data-gift="4">
+        <div class="gift-badge">ХИТ</div>
+        <div class="gift-icon">🚀</div>
+        <div class="gift-name">Ракетный набор</div>
+        <div class="gift-price"><span class="gift-curr-label">USDT</span> 50.00</div>
+        <button class="gift-btn">Открыть</button>
+      </div>
+    </div>
+  </div>
+</section>
 
       <section class="screen" id="screen-season">
-        <div class="placeholder-card">SEASON<br><br><span style="font-size:14px;color:var(--muted)">Screen placeholder. Visual tab is ready for future development.</span></div>
+        <div class="placeholder-card">СЕЗОН<br><br><span style="font-size:14px;color:var(--muted)">Вкладка готова — контент появится в следующем обновлении.</span></div>
       </section>
 
       <section class="screen" id="screen-profile">
@@ -511,72 +780,74 @@
           <div class="profile-head">
             <div class="profile-avatar">☣</div>
             <div class="profile-name" id="profileName">K. Trust</div>
-            <div class="profile-level">Level <span id="profileLevel">1</span> · Demo account</div>
+            <div class="profile-level">Уровень <span id="profileLevel">1</span> · Демо-аккаунт</div>
           </div>
 
           <div class="progress-block">
             <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted)">
-              <span>Progress to next level</span>
+              <span>До следующего уровня</span>
               <span id="profileProgressText">0 / 100 XP</span>
             </div>
             <div class="progress-track"><div class="progress-fill" id="profileProgress"></div></div>
           </div>
 
           <div class="profile-actions">
-            <button class="accent-btn" id="topUpBtn">Top up demo</button>
-            <button class="ghost-btn" id="syncBtn">Sync with game</button>
+            <button class="accent-btn" id="topUpBtn">Пополнить демо</button>
+            <button class="ghost-btn" id="syncBtn">Синхронизировать</button>
           </div>
 
           <div class="stats-grid">
             <div class="stat-box">
-              <div class="stat-label">Demo balance</div>
+              <div class="stat-label">Демо-баланс</div>
               <div class="stat-value" id="profileBalance">0.00</div>
             </div>
             <div class="stat-box">
-              <div class="stat-label">Rounds</div>
+              <div class="stat-label">Раундов</div>
               <div class="stat-value" id="profileRounds">0</div>
             </div>
             <div class="stat-box">
-              <div class="stat-label">Best cashout</div>
+              <div class="stat-label">Лучший вывод</div>
               <div class="stat-value" id="profileBest">0.00</div>
             </div>
             <div class="stat-box">
-              <div class="stat-label">Last crash</div>
+              <div class="stat-label">Последний краш</div>
               <div class="stat-value" id="profileCrash">—</div>
             </div>
           </div>
 
           <div class="stats-card">
-            <div style="font-weight:900;font-size:18px;margin-bottom:8px">Demo inventory</div>
-            <div style="color:var(--muted);line-height:1.55;font-size:14px">Profile is fully connected to the crash logic. The demo balance updates after every bet, cashout and crash. This screen is intentionally clean and mobile-first.</div>
+            <div style="font-weight:900;font-size:18px;margin-bottom:8px">Демо-инвентарь</div>
+            <div style="color:var(--muted);line-height:1.55;font-size:14px">Профиль связан с игровой логикой. Баланс обновляется после каждой ставки, вывода и краша. Интерфейс оптимизирован для мобильных.</div>
           </div>
         </div>
       </section>
 
+      </div><!-- /screens-container -->
+
       <nav class="bottom-nav">
         <button class="nav-btn active" data-screen="crash">
           <svg viewBox="0 0 24 24"><path d="M13.4 2.3c3 .6 6.2 3.8 7.3 6.9l-4.5.9-2.5 4.6-4.8 2.7-1.8 4.3H4.8l1.5-5.2L2 12.3l4.2-1.8 2.7-4.8 4.5-3.4Zm-3.2 8.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Z"/></svg>
-          <span>Crash</span>
+          <span>Краш</span>
         </button>
         <button class="nav-btn" data-screen="cases">
           <svg viewBox="0 0 24 24"><path d="M20 7h-3.2a2.8 2.8 0 0 0 .2-1c0-1.7-1.3-3-3-3-1.2 0-2.2.7-2.7 1.7A3 3 0 0 0 8.7 3c-1.7 0-3 1.3-3 3 0 .4 0 .7.2 1H4a2 2 0 0 0-2 2v2h9V7h2v4h9V9a2 2 0 0 0-2-2ZM8.7 5c.6 0 1 .4 1 1v1h-2v-1c0-.6.4-1 1-1Zm6.6 0c.6 0 1 .4 1 1v1h-2v-1c0-.6.4-1 1-1ZM2 13h9v9H4a2 2 0 0 1-2-2v-7Zm11 0h9v7a2 2 0 0 1-2 2h-7v-9Z"/></svg>
-          <span>Cases</span>
+          <span>Кейсы</span>
         </button>
         <button class="nav-btn" data-screen="season">
           <svg viewBox="0 0 24 24"><path d="M17 3H7v2H3v3c0 2.8 2 5.2 4.8 5.8A5.9 5.9 0 0 0 11 17.7V20H7v2h10v-2h-4v-2.3a6 6 0 0 0 3.2-3.9C19 13.2 21 10.8 21 8V5h-4V3Zm-9 8.7A3.5 3.5 0 0 1 5 8V7h3v4.7Zm11-3.7a3.5 3.5 0 0 1-3 3.7V7h3v1Z"/></svg>
-          <span>Season</span>
+          <span>Сезон</span>
         </button>
         <button class="nav-btn" data-screen="profile">
           <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5Z"/></svg>
-          <span>Profile</span>
+          <span>Профиль</span>
         </button>
       </nav>
     </div>
 
     <div class="toast" id="toast">
-      <div class="toast-title">Cashout success</div>
+      <div class="toast-title" id="toastTitle">Вывод успешен</div>
       <div class="toast-value" id="toastValue">+0.00</div>
-      <div class="toast-sub" id="toastSub">at x1.00</div>
+      <div class="toast-sub" id="toastSub">при x1.00</div>
     </div>
   </div>
 
@@ -624,7 +895,6 @@
       substate: $('substate'),
       history: $('history'),
       betInput: $('betInput'),
-      maxBtn: $('maxBtn'),
       mainBtn: $('mainBtn'),
       betHint: $('betHint'),
       playersList: $('playersList'),
@@ -633,6 +903,7 @@
       flash: $('flash'),
       toast: $('toast'),
       toastValue: $('toastValue'),
+      toastTitle: $('toastTitle'),
       toastSub: $('toastSub'),
       trail: $('trail'),
       stars: $('stars'),
@@ -680,7 +951,7 @@
 
     function updateHistory() {
       const items = [];
-      items.push('<div class="pill wait">' + (state.phase === 'flying' ? 'LIVE' : state.phase === 'betting' ? 'BETTING' : state.phase === 'crash' ? 'CRASH' : 'WAITING') + '</div>');
+      items.push('<div class="pill wait">' + (state.phase === 'flying' ? 'LIVE' : state.phase === 'betting' ? 'СТАВКИ' : state.phase === 'crash' ? 'КРАШ' : 'ОЖИДАНИЕ') + '</div>');
       state.history.slice(0, 6).forEach(v => {
         const cls = v >= 10 ? 'mega' : v >= 4 ? 'high' : v >= 1.8 ? 'mid' : 'low';
         items.push('<div class="pill ' + cls + '">x' + fmt(v) + '</div>');
@@ -712,42 +983,31 @@
       btn.disabled = false;
 
       if (state.phase === 'betting' || state.phase === 'waiting') {
-        btn.textContent = state.betPlaced ? 'BET ACCEPTED' : 'PLACE BET';
+        btn.textContent = state.betPlaced ? 'СТАВКА ПРИНЯТА' : 'ПОСТАВИТЬ СТАВКУ';
         btn.disabled = state.betPlaced;
         if (btn.disabled) btn.classList.add('disabled');
-        els.betHint.textContent = state.betPlaced ? 'Your bet is queued for the live round.' : 'Demo balance is linked to the profile and updated in real time.';
+        els.betHint.textContent = state.betPlaced ? 'Ваша ставка стоит в очереди на следующий раунд.' : 'Демо-баланс обновляется в реальном времени.';
       } else if (state.phase === 'flying') {
         if (state.betPlaced && !state.cashedOut) {
-          btn.textContent = 'CASH OUT x' + fmt(state.multiplier);
+          btn.textContent = 'ВЫВЕСТИ x' + fmt(state.multiplier);
           btn.classList.add('cashout');
-          els.betHint.textContent = 'Cash out before the rocket crashes.';
+          els.betHint.textContent = 'Выведи до краша!';
         } else {
-          btn.textContent = state.cashedOut ? 'CASHED OUT' : 'ROUND LIVE';
+          btn.textContent = state.cashedOut ? 'ВЫВЕДЕНО' : 'РАУНД ИДЁТ';
           btn.disabled = true;
           btn.classList.add('disabled');
-          els.betHint.textContent = state.cashedOut ? 'Wait for the next round to place a new bet.' : 'Round in progress.';
+          els.betHint.textContent = state.cashedOut ? 'Жди следующего раунда для новой ставки.' : 'Раунд в процессе.';
         }
       } else if (state.phase === 'crash') {
-        btn.textContent = 'CRASHED';
+        btn.textContent = 'КРАШ';
         btn.disabled = true;
         btn.classList.add('disabled');
-        els.betHint.textContent = 'New round will start automatically.';
+        els.betHint.textContent = 'Новый раунд начнётся автоматически.';
       }
     }
 
     function fakePlayers() {
-      const names = ['Gleb', 'Orbit', 'Zero', 'Nova', 'Viper', 'Pixel', 'Nox'];
-      const avatars = ['🐧','🧪','🛰','🦾','🛸','⚗','☢'];
-      const count = Math.floor(rand(1, 4));
-      state.otherPlayers = Array.from({ length: count }, (_, i) => ({
-        id: 'bot-' + i,
-        name: choose(names),
-        avatar: choose(avatars),
-        bet: Number(rand(0.3, 3).toFixed(2)),
-        status: 'active',
-        cashout: Number(rand(1.1, 4.2).toFixed(2)),
-        result: 0
-      }));
+      state.otherPlayers = [];
     }
 
     function renderPlayers() {
@@ -774,12 +1034,12 @@
       });
 
       if (!rows.length) {
-        els.playersList.innerHTML = '<div class="empty-state">Waiting for bets</div>';
+        els.playersList.innerHTML = '<div class="empty-state">Ожидание ставок</div>';
         return;
       }
 
       els.playersList.innerHTML = rows.map(p => {
-        let statusText = 'queued';
+        let statusText = 'в очереди';
         let statusCls = 'neutral';
         let resultText = '—';
         if (p.status === 'active') {
@@ -787,21 +1047,21 @@
           statusCls = 'neutral';
           resultText = 'LIVE';
         } else if (p.status === 'queued') {
-          statusText = 'accepted';
-          resultText = 'Ready';
+          statusText = 'принято';
+          resultText = 'Готово';
         } else if (p.status === 'cashed') {
           statusText = 'x' + fmt(p.cashout);
           statusCls = 'up';
           resultText = '+' + fmt(p.result);
         } else if (p.status === 'lost') {
-          statusText = 'crashed';
+          statusText = 'краш';
           statusCls = 'down';
           resultText = '-' + fmt(p.bet);
         }
         return '<div class="player-row">'
           + '<div class="avatar">' + p.avatar + '</div>'
           + '<div class="player-main">'
-          + '<div class="player-name">' + p.name + (p.me ? ' · you' : '') + '</div>'
+          + '<div class="player-name">' + p.name + (p.me ? ' · вы' : '') + '</div>'
           + '<div class="player-meta"><span>◈ ' + fmt(p.bet) + '</span><span class="' + statusCls + '">' + statusText + '</span></div>'
           + '</div>'
           + '<div class="player-result ' + (statusCls || 'neutral') + '">' + resultText + '</div>'
@@ -811,7 +1071,7 @@
 
     function showToast(amount, at) {
       els.toastValue.textContent = '+' + fmt(amount);
-      els.toastSub.textContent = 'at x' + fmt(at);
+      els.toastSub.textContent = 'при x' + fmt(at);
       els.toast.classList.add('show');
       clearTimeout(showToast._t);
       showToast._t = setTimeout(() => els.toast.classList.remove('show'), 2800);
@@ -822,7 +1082,7 @@
       const amt = getBetInput();
       if (amt < 0.01) return;
       if (amt > state.balance) {
-        els.betHint.textContent = 'Insufficient demo balance.';
+        els.betHint.textContent = 'Недостаточно средств на балансе.';
         vibrate('medium');
         return;
       }
@@ -877,7 +1137,7 @@
       state.rocket.visible = true;
       fakePlayers();
       setMultiplier(1, '');
-      setSubstate('WAITING');
+      setSubstate('ОЖИДАНИЕ');
       els.flightGlow.classList.remove('on');
       updateMainButton();
       renderPlayers();
@@ -890,7 +1150,7 @@
     function startBetting() {
       state.phase = 'betting';
       state.countdown = 4;
-      setSubstate('BETTING · ' + state.countdown);
+      setSubstate('СТАВКИ · ' + state.countdown);
       updateMainButton();
       renderPlayers();
       state.timers.start = setInterval(() => {
@@ -901,16 +1161,24 @@
           startFlight();
           return;
         }
-        setSubstate('BETTING · ' + state.countdown);
+        setSubstate('СТАВКИ · ' + state.countdown);
       }, 1000);
     }
 
     function startFlight() {
       state.phase = 'flying';
       state.multiplier = 1;
-      state.crashAt = Number((rand(1.07, 10.8)).toFixed(2));
+      // House edge ~5%: большинство краш < 2x, редко высокие
+      const r = Math.random();
+      let crashVal;
+      if (r < 0.45) crashVal = rand(1.01, 1.6);
+      else if (r < 0.72) crashVal = rand(1.6, 2.8);
+      else if (r < 0.88) crashVal = rand(2.8, 5.0);
+      else if (r < 0.96) crashVal = rand(5.0, 12.0);
+      else crashVal = rand(12.0, 50.0);
+      state.crashAt = Number(crashVal.toFixed(2));
       setMultiplier(1, 'live');
-      setSubstate('LIVE FLIGHT');
+      setSubstate('ПОЛЁТ');
       els.flightGlow.classList.add('on');
       updateMainButton();
       renderPlayers();
@@ -929,7 +1197,10 @@
         updateMainButton();
         renderPlayers();
         updateRocket(state.multiplier);
-        if (state.multiplier >= state.crashAt) crashRound();
+        if (state.multiplier >= state.crashAt) { crashRound(); return; }
+if (state.autoCashout && state.betPlaced && !state.cashedOut && state.multiplier >= state.autoCashoutAt) {
+  cashOut();
+}
       }, 40);
     }
 
@@ -942,7 +1213,7 @@
       state.history.unshift(state.crashAt);
       state.history = state.history.slice(0, 10);
       setMultiplier(state.crashAt, 'crash');
-      setSubstate('CRASH');
+      setSubstate('КРАШ');
       els.flightGlow.classList.remove('on');
       els.flash.classList.remove('show');
       void els.flash.offsetWidth;
@@ -956,24 +1227,148 @@
       state.timers.start = setTimeout(startWaiting, 1600);
     }
 
-    function updateRocket(mult) {
-      const scene = els.scene.getBoundingClientRect();
-      const w = scene.width;
-      const h = scene.height;
-      const crash = Math.max(1.1, state.crashAt || 3);
-      const p = clamp((mult - 1) / Math.max(0.15, crash - 1), 0, 1);
-      const x = .16 + p * .62 + Math.sin(p * 6.3) * .018;
-      const y = .76 - p * .48 + Math.cos(p * 8.6) * .022;
-      const angle = -18 + p * 34 + Math.sin(p * 4) * 4;
-      state.rocket.x = x;
-      state.rocket.y = y;
-      state.rocket.angle = angle;
-      els.rocketWrap.style.left = (x * w) + 'px';
-      els.rocketWrap.style.top = (y * h) + 'px';
-      els.rocketWrap.style.transform = 'translate(-50%,-50%) rotate(' + angle + 'deg) scale(' + (1 + p * .08) + ')';
-      pushTrail(x * w, y * h);
-      drawTrail();
+    const rocketState = {
+  wobble: 0, wobbleV: 0, tiltExtra: 0, tiltV: 0,
+  meteorX: -0.3, meteorY: 0.2, meteorActive: false, meteorTimer: 0,
+  nearMeteor: false, dodgeDir: 0, dodgeT: 0,
+  lastMult: 1, lastTime: performance.now()
+};
+
+function updateRocket(mult) {
+  const scene = els.scene.getBoundingClientRect();
+  const w = scene.width;
+  const h = scene.height;
+  const crash = Math.max(1.1, state.crashAt || 3);
+  const p = clamp((mult - 1) / Math.max(0.15, crash - 1), 0, 1);
+  const now = performance.now();
+  const dt = Math.min((now - rocketState.lastTime) / 1000, 0.1);
+  rocketState.lastTime = now;
+
+  // МЕТЕОРИТ — появляется случайно раз в ~5-10 сек во время полёта
+  if (state.phase === 'flying') {
+    rocketState.meteorTimer -= dt;
+    if (rocketState.meteorTimer <= 0 && !rocketState.meteorActive) {
+      rocketState.meteorActive = true;
+      rocketState.meteorTimer = rand(5, 11);
+      rocketState.meteorX = 1.1 + Math.random() * 0.2;
+      rocketState.meteorY = 0.1 + Math.random() * 0.6;
+      // удар появляется из правого края и летит влево
     }
+  }
+
+  // Позиция ракеты с красивой S-кривой и лёгкими увёртываниями
+  const waveX = Math.sin(p * 9.4 + 1.2) * 0.022;
+  const waveY = Math.cos(p * 7.1 + 0.8) * 0.018;
+
+  // Уворот от метеорита
+  let dodgeOffsetX = 0;
+  let dodgeOffsetY = 0;
+  if (rocketState.meteorActive) {
+    const rx = rocketState.meteorX;
+    const ry = rocketState.meteorY;
+    const baseX = 0.16 + p * 0.62;
+    const baseY = 0.76 - p * 0.48;
+    const dist = Math.hypot(rx - baseX, ry - baseY);
+    if (dist < 0.22) {
+      rocketState.nearMeteor = true;
+      rocketState.dodgeT = Math.min(1, rocketState.dodgeT + dt * 4);
+      const dodgeAmt = Math.sin(rocketState.dodgeT * Math.PI) * 0.07;
+      dodgeOffsetX = dodgeAmt * (baseY - ry) * 2;
+      dodgeOffsetY = dodgeAmt * -(baseX - rx) * 2;
+    } else {
+      rocketState.nearMeteor = false;
+      rocketState.dodgeT = Math.max(0, rocketState.dodgeT - dt * 2);
+    }
+    // двигаем метеорит
+    rocketState.meteorX -= dt * (0.4 + p * 0.3);
+    rocketState.meteorY += dt * 0.06;
+    if (rocketState.meteorX < -0.2) rocketState.meteorActive = false;
+  } else {
+    rocketState.dodgeT = Math.max(0, rocketState.dodgeT - dt);
+  }
+
+  // Wobble — дрожание при перегрузке
+  rocketState.wobbleV += (-rocketState.wobble * 18 + (Math.random() - 0.5) * (state.phase === 'flying' ? 14 : 2)) * dt;
+  rocketState.wobble += rocketState.wobbleV * dt;
+  rocketState.wobble = clamp(rocketState.wobble, -0.014, 0.014);
+
+  const x = clamp(0.16 + p * 0.62 + waveX + dodgeOffsetX + rocketState.wobble, 0.05, 0.95);
+  const y = clamp(0.76 - p * 0.48 + waveY + dodgeOffsetY, 0.04, 0.94);
+
+  // Угол — красивый наклон с дополнительным jolt при уворте
+  const baseAngle = -22 + p * 44;
+  const waveAngle = Math.sin(p * 6.2) * 6;
+  const dodgeAngle = rocketState.dodgeT * 28 * (dodgeOffsetX > 0 ? 1 : -1);
+  const wobbleAngle = rocketState.wobble * 400;
+  const angle = baseAngle + waveAngle + dodgeAngle + wobbleAngle;
+
+  // Crash — ракета резко уходит вниз
+  if (state.phase === 'crash') {
+    els.rocketWrap.style.transition = 'top .6s cubic-bezier(.55,0,1,.7), opacity .5s .1s';
+    els.rocketWrap.style.top = (h * 1.15) + 'px';
+    els.rocketWrap.style.opacity = '0';
+    return;
+  } else {
+    els.rocketWrap.style.transition = '';
+    els.rocketWrap.style.opacity = '1';
+  }
+
+  state.rocket.x = x;
+  state.rocket.y = y;
+  state.rocket.angle = angle;
+  els.rocketWrap.style.left = (x * w) + 'px';
+  els.rocketWrap.style.top = (y * h) + 'px';
+  const scaleBoost = 1 + p * 0.1 + Math.abs(rocketState.wobble) * 2;
+  els.rocketWrap.style.transform = 'translate(-50%,-50%) rotate(' + angle + 'deg) scale(' + scaleBoost + ')';
+
+  // Отрисовываем метеорит на trail canvas
+  pushTrail(x * w, y * h);
+  drawTrailWithMeteor(w, h);
+}
+
+function drawTrailWithMeteor(w, h) {
+  trailCtx.clearRect(0, 0, els.trail.width, els.trail.height);
+
+  // Метеорит
+  if (rocketState.meteorActive) {
+    const mx = rocketState.meteorX * w;
+    const my = rocketState.meteorY * h;
+    const grad = trailCtx.createRadialGradient(mx, my, 0, mx, my, 18);
+    grad.addColorStop(0, 'rgba(255,200,80,0.95)');
+    grad.addColorStop(0.4, 'rgba(255,100,40,0.7)');
+    grad.addColorStop(1, 'rgba(255,60,20,0)');
+    trailCtx.beginPath();
+    trailCtx.arc(mx, my, 9, 0, Math.PI * 2);
+    trailCtx.fillStyle = grad;
+    trailCtx.fill();
+    // хвост метеорита
+    trailCtx.beginPath();
+    trailCtx.moveTo(mx, my);
+    trailCtx.lineTo(mx + 48, my - 10);
+    const mGrad = trailCtx.createLinearGradient(mx, my, mx + 48, my - 10);
+    mGrad.addColorStop(0, 'rgba(255,150,40,0.6)');
+    mGrad.addColorStop(1, 'rgba(255,100,40,0)');
+    trailCtx.strokeStyle = mGrad;
+    trailCtx.lineWidth = 6;
+    trailCtx.lineCap = 'round';
+    trailCtx.stroke();
+  }
+
+  // Трейл ракеты
+  if (state.trail.length < 2) return;
+  for (let i = 1; i < state.trail.length; i++) {
+    const p0 = state.trail[i - 1];
+    const p1 = state.trail[i];
+    const t = i / state.trail.length;
+    trailCtx.beginPath();
+    trailCtx.moveTo(p0.x, p0.y);
+    trailCtx.lineTo(p1.x, p1.y);
+    trailCtx.strokeStyle = 'rgba(152,255,93,' + (t * 0.38) + ')';
+    trailCtx.lineWidth = 2 + t * 8;
+    trailCtx.lineCap = 'round';
+    trailCtx.stroke();
+  }
+}
 
     const trailCtx = els.trail.getContext('2d');
     function resizeTrail() {
@@ -1074,9 +1469,41 @@
       requestAnimationFrame(frame);
     }
 
+    const tabOrder = ['crash', 'cases', 'season', 'profile'];
+
     function switchScreen(name) {
+      if (name === state.activeScreen) return;
+      const fromIndex = tabOrder.indexOf(state.activeScreen);
+      const toIndex = tabOrder.indexOf(name);
+      const goRight = toIndex > fromIndex;
+
+      const outEl = document.getElementById('screen-' + state.activeScreen);
+      const inEl  = document.getElementById('screen-' + name);
+      if (!outEl || !inEl) return;
+
+      // prep incoming screen off-screen
+      inEl.classList.remove('active', 'exit-left', 'exit-right', 'enter-from-right', 'enter-from-left');
+      inEl.classList.add(goRight ? 'enter-from-right' : 'enter-from-left');
+
+      // force reflow
+      void inEl.offsetWidth;
+
+      // slide out current
+      outEl.classList.remove('active');
+      outEl.classList.add(goRight ? 'exit-left' : 'exit-right');
+
+      // slide in new
+      inEl.classList.remove('enter-from-right', 'enter-from-left');
+      inEl.classList.add('active');
+
+      // cleanup outgoing after transition
+      const cleanup = () => {
+        outEl.classList.remove('exit-left', 'exit-right');
+        outEl.removeEventListener('transitionend', cleanup);
+      };
+      outEl.addEventListener('transitionend', cleanup, { once: true });
+
       state.activeScreen = name;
-      document.querySelectorAll('.screen').forEach(el => el.classList.toggle('active', el.id === 'screen-' + name));
       document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.screen === name));
     }
 
@@ -1097,47 +1524,104 @@
     }
 
     function bindEvents() {
-      els.mainBtn.addEventListener('click', () => {
-        if (state.phase === 'waiting' || state.phase === 'betting') placeBet();
-        else if (state.phase === 'flying') cashOut();
+      // MODAL
+      const overlay = document.getElementById('betModalOverlay');
+      const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+      const modalBalance = document.getElementById('modalBalance');
+      const modalCurrLabel = document.getElementById('modalCurrLabel');
+
+      function openBetModal() {
+        if (state.phase !== 'waiting' && state.phase !== 'betting') return;
+        if (state.betPlaced) return;
+        modalBalance.textContent = fmt(state.balance);
+        overlay.classList.add('open');
+      }
+      function closeBetModal() {
+        overlay.classList.remove('open');
+      }
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) closeBetModal(); });
+
+      // Currency tabs inside modal
+      document.querySelectorAll('.bet-curr-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.bet-curr-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          if (modalCurrLabel) modalCurrLabel.textContent = btn.dataset.curr;
+        });
       });
 
-      els.maxBtn.addEventListener('click', () => setBetInput(state.balance));
-      document.querySelectorAll('[data-amt]').forEach(btn => btn.addEventListener('click', () => setBetInput(Number(btn.dataset.amt))));
-      document.querySelectorAll('[data-act]').forEach(btn => btn.addEventListener('click', () => {
-        const current = getBetInput();
-        if (btn.dataset.act === 'half') setBetInput(Math.max(.01, state.balance / 2));
-        if (btn.dataset.act === 'double') setBetInput(Math.max(.01, current * 2));
-        if (btn.dataset.act === 'all') setBetInput(Math.max(.01, state.balance));
-        if (btn.dataset.act === 'reset') setBetInput(10);
-      }));
+      // Confirm bet from modal
+      if (modalConfirmBtn) {
+        modalConfirmBtn.addEventListener('click', () => {
+          closeBetModal();
+          placeBet();
+        });
+      }
+
+      // AUTO CASHOUT
+      const autoTrack = document.getElementById('autoToggleTrack');
+      const autoInputWrap = document.getElementById('autoInputWrap');
+      const autoInput = document.getElementById('autoInput');
+      const autoMinus = document.getElementById('autoMinus');
+      const autoPlus = document.getElementById('autoPlus');
+      state.autoCashout = false;
+      state.autoCashoutAt = 2.0;
+
+      if (autoTrack) {
+        autoTrack.addEventListener('click', () => {
+          state.autoCashout = !state.autoCashout;
+          autoTrack.classList.toggle('on', state.autoCashout);
+          if (autoInputWrap) autoInputWrap.classList.toggle('enabled', state.autoCashout);
+        });
+      }
+      if (autoInput) {
+        autoInput.addEventListener('input', () => {
+          const v = parseFloat(autoInput.value);
+          if (v > 1) state.autoCashoutAt = v;
+        });
+      }
+      if (autoMinus) {
+        autoMinus.addEventListener('click', () => {
+          const v = Math.max(1.1, (parseFloat(autoInput.value) || 2) - 0.1);
+          autoInput.value = fmt(v);
+          state.autoCashoutAt = v;
+        });
+      }
+      if (autoPlus) {
+        autoPlus.addEventListener('click', () => {
+          const v = (parseFloat(autoInput.value) || 2) + 0.1;
+          autoInput.value = fmt(v);
+          state.autoCashoutAt = v;
+        });
+      }
 
       document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', () => switchScreen(btn.dataset.screen)));
 
-      $('balanceAdd').addEventListener('click', () => {
+      if ($('balanceAdd')) $('balanceAdd').addEventListener('click', () => {
         state.balance = Number((state.balance + 100).toFixed(2));
-        syncBalance();
-        syncProfile();
-        showToast(100, 1);
+        syncBalance(); syncProfile(); showToast(100, 1);
       });
-      $('topUpBtn').addEventListener('click', () => {
+      if ($('topUpBtn')) $('topUpBtn').addEventListener('click', () => {
         state.balance = Number((state.balance + 250).toFixed(2));
-        syncBalance();
-        syncProfile();
-        showToast(250, 1);
+        syncBalance(); syncProfile(); showToast(250, 1);
       });
-      $('syncBtn').addEventListener('click', () => {
-        syncBalance();
-        syncProfile();
-      });
-      $('hapticBtn').addEventListener('click', (e) => {
+      if ($('syncBtn')) $('syncBtn').addEventListener('click', () => { syncBalance(); syncProfile(); });
+      if ($('hapticBtn')) $('hapticBtn').addEventListener('click', (e) => {
         state.haptics = !state.haptics;
         e.currentTarget.style.opacity = state.haptics ? '1' : '.45';
       });
-      $('langBtn').addEventListener('click', () => {
+      if ($('langBtn')) $('langBtn').addEventListener('click', () => {
         state.me.name = state.me.name === 'K. Trust' ? 'К. Траст' : 'K. Trust';
-        syncProfile();
-        renderPlayers();
+        syncProfile(); renderPlayers();
+      });
+
+      // Main button: open modal or cashout
+      els.mainBtn.addEventListener('click', () => {
+        if (state.phase === 'flying' && state.betPlaced && !state.cashedOut) {
+          cashOut();
+        } else if ((state.phase === 'waiting' || state.phase === 'betting') && !state.betPlaced) {
+          openBetModal();
+        }
       });
 
       document.addEventListener('gesturestart', e => e.preventDefault());
